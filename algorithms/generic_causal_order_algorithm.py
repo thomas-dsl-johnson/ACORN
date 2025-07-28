@@ -20,7 +20,7 @@ class GenericCausalOrderAlgorithm:
         Parameters
         ----------
         df : pd.DataFrame,
-             The training data, with shape (n_samples, n_features) where
+             The training IT_monitoring, with shape (n_samples, n_features) where
              - n_samples is the number of samples
              - n_features is the number of features
 
@@ -28,7 +28,7 @@ class GenericCausalOrderAlgorithm:
         ----------
         causal_order : CausalOrder,
             The causal order. A CausalOrder is a list[int] where
-            each integer represents the index of a feature in the training data.
+            each integer represents the index of a feature in the training IT_monitoring.
         """
         raise NotImplementedError
 
@@ -39,14 +39,14 @@ class GenericCausalOrderAlgorithm:
         Parameters
         ----------
         filepath : str
-            The path to the file to load the training data from.
+            The path to the file to load the training IT_monitoring from.
             Only .csv, .xls, and .xlsx files are currently supported.
 
         Returns
         ----------
         causal_order : CausalOrder,
             The causal order. A CausalOrder is a list[int] where
-            each integer represents the index of a feature in the training data.
+            each integer represents the index of a feature in the training IT_monitoring.
         time_taken : float
             The time taken to run the Causal Order algorithm in seconds.
         """
