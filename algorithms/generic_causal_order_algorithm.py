@@ -9,7 +9,7 @@ CausalOrder: typing.TypeAlias = list[int]
 
 class GenericCausalOrderAlgorithm:
     """
-    An abstract base class representing a generic Algorithm which produces a causal order
+    An abstract base class representing a generic algorithm that produces a causal order
     """
 
     @abc.abstractmethod
