@@ -5,7 +5,6 @@ import os
 import lingam
 import pandas as pd
 from algorithms.causal_order.causal_order_result import CausalOrderResult
-from algorithms.causal_order.generic_causal_order_algorithm import CausalOrder
 from algorithms.end_to_end.end_to_end_result import EndToEndResult
 
 
