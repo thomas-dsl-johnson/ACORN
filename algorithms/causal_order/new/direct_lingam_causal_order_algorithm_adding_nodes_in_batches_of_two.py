@@ -2,10 +2,9 @@
 Add nodes in batches of two
 """
 import math
-
 import pandas as pd
 import numpy as np
-from algorithms.generic_causal_order_algorithm import GenericCausalOrderAlgorithm
+from algorithms.causal_order.generic_causal_order_algorithm import GenericCausalOrderAlgorithm
 
 
 class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo(GenericCausalOrderAlgorithm):
@@ -44,7 +43,7 @@ class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo(GenericCausalOrd
         """
         return self.get_causal_order_using_direct_lingam(df)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "DirectLingamAlgorithmAddingNodesInBatchesOfTwo"
 
     @staticmethod

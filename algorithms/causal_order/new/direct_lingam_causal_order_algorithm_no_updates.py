@@ -1,9 +1,15 @@
+"""
+Comment out these lines:
+    for i in U:
+        if i != m:
+            X_[:, i] = residual(X_[:, i], X_[:, m])
+"""
 import pandas as pd
 import numpy as np
-from algorithms.generic_causal_order_algorithm import GenericCausalOrderAlgorithm
+from algorithms.causal_order.generic_causal_order_algorithm import GenericCausalOrderAlgorithm
 
 
-class DirectLingamCausalOrderAlgorithm(GenericCausalOrderAlgorithm):
+class DirectLingamCausalOrderAlgorithmNoUpdates(GenericCausalOrderAlgorithm):
     """
     Runs the DirectLiNGAM algorithm to generate the causal order:
     1.  Given a p-dimensional random vector x, a set of its variable subscripts U and a p × n data
@@ -39,8 +45,8 @@ class DirectLingamCausalOrderAlgorithm(GenericCausalOrderAlgorithm):
         """
         return self.get_causal_order_using_direct_lingam(df)
 
-    def __str__(self):
-        return "DirectLingamAlgorithm"
+    def __str__(self) -> str:
+        return "DirectLingamAlgorithmNoUpdates"
 
     @staticmethod
     def residual(xi: np.ndarray, xj: np.ndarray) -> np.ndarray:
@@ -231,9 +237,15 @@ class DirectLingamCausalOrderAlgorithm(GenericCausalOrderAlgorithm):
             # If xm is a cause, its influence should be removed from its effects
             # to discover further causal relationships among the remaining variables.
             # This effectively transforms x into r(m) and X into R(m) as described in the algorithm.
-            for i in U:
-                if i != m:
-                    X_[:, i] = self.residual(X_[:, i], X_[:, m])
+
+            ###################
+            ###################
+            # These lines are commented out
+            # for i in U:
+            #     if i != m:
+            #         X_[:, i] = self.residual(X_[:, i], X_[:, m])
+            ###################
+            ###################
             # Step 2(d) m is removed from the set of unordered variables U.
             U = U[U != m]
         return K
@@ -259,5 +271,5 @@ if __name__ == '__main__':
         return df
 
 
-    algorithm = DirectLingamCausalOrderAlgorithm()
+    algorithm = DirectLingamCausalOrderAlgorithmNoUpdates()
     print(algorithm.get_causal_order_using_direct_lingam(get_matrix()))
