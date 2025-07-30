@@ -1,15 +1,14 @@
 """
-Comment out these lines:
-    for i in U:
-        if i != m:
-            X_[:, i] = residual(X_[:, i], X_[:, m])
+Add nodes in batches of two
 """
+import math
+
 import pandas as pd
 import numpy as np
 from algorithms.generic_causal_order_algorithm import GenericCausalOrderAlgorithm
 
 
-class DirectLingamCausalOrderAlgorithmNoUpdates(GenericCausalOrderAlgorithm):
+class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo(GenericCausalOrderAlgorithm):
     """
     Runs the DirectLiNGAM algorithm to generate the causal order:
     1.  Given a p-dimensional random vector x, a set of its variable subscripts U and a p × n data
@@ -46,7 +45,7 @@ class DirectLingamCausalOrderAlgorithmNoUpdates(GenericCausalOrderAlgorithm):
         return self.get_causal_order_using_direct_lingam(df)
 
     def __str__(self):
-        return "DirectLingamAlgorithmNoUpdates"
+        return "DirectLingamAlgorithmAddingNodesInBatchesOfTwo"
 
     @staticmethod
     def residual(xi: np.ndarray, xj: np.ndarray) -> np.ndarray:
@@ -123,7 +122,7 @@ class DirectLingamCausalOrderAlgorithmNoUpdates(GenericCausalOrderAlgorithm):
                 self.entropy(xi_std) + self.entropy(rj_i / np.std(rj_i))
         )
 
-    def search_causal_order(self, X: np.ndarray, U: list[int]) -> int:
+    def search_causal_order(self, X: np.ndarray, U: list[int]) -> (int, int):
         """
         Search for the next variable in the causal ordering.
 
@@ -188,8 +187,16 @@ class DirectLingamCausalOrderAlgorithmNoUpdates(GenericCausalOrderAlgorithm):
         #  effectively finding the variable that is "most independent" of its residuals
         #  It is selected as the next variable in the causal order.
         #  This xm is considered to be a "root" cause among the remaining variables.
-        xm = Uc[np.argmax(M_list)]
-        return xm
+
+        ##############
+        ##############
+        i = np.argmax(M_list)
+        xm = Uc[i]
+        M_list[i] = -math.inf
+        xn = Uc[np.argmax(M_list)]
+        ##############
+        ##############
+        return xm, xn
 
     def get_causal_order_using_direct_lingam(self, df: pd.DataFrame) -> list[int]:
         """
@@ -227,7 +234,7 @@ class DirectLingamCausalOrderAlgorithmNoUpdates(GenericCausalOrderAlgorithm):
         for _ in range(n_features):
             # Step 2(a): Find the Most Independent Variable m
 
-            m = self.search_causal_order(X_, U)
+            m, n = self.search_causal_order(X_, U)
             # Step 2(b): Append newly found causal variable m to ordered list K
             K.append(m)
             # Step 2(c): Update X and U:
@@ -237,17 +244,23 @@ class DirectLingamCausalOrderAlgorithmNoUpdates(GenericCausalOrderAlgorithm):
             # If xm is a cause, its influence should be removed from its effects
             # to discover further causal relationships among the remaining variables.
             # This effectively transforms x into r(m) and X into R(m) as described in the algorithm.
-
-            ###################
-            ###################
-            # These lines are commented out
-            # for i in U:
-            #     if i != m:
-            #         X_[:, i] = self.residual(X_[:, i], X_[:, m])
-            ###################
-            ###################
+            for i in U:
+                if i != m:
+                    X_[:, i] = self.residual(X_[:, i], X_[:, m])
             # Step 2(d) m is removed from the set of unordered variables U.
-            U = U[U != m]
+            ##############
+            ##############
+            if U.size == 1:
+                return K
+            K.append(n)
+            for i in U:
+                if i != n:
+                    X_[:, i] = self.residual(X_[:, i], X_[:, n])
+            U = U[U not in [m,n]]
+            if U.size == 0:
+                return K
+            ##############
+            ##############
         return K
 
 
@@ -271,5 +284,5 @@ if __name__ == '__main__':
         return df
 
 
-    algorithm = DirectLingamCausalOrderAlgorithmNoUpdates()
+    algorithm = DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo()
     print(algorithm.get_causal_order_using_direct_lingam(get_matrix()))
