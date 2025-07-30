@@ -1,7 +1,8 @@
 import lingam
+from algorithms.causal_order.causal_order_result import CausalOrderResult
 
 
-class EndToEndLingamResult:
+class EndToEndResult:
     """
     EndtoEndLingamResult encapsulates the result of finding the causal order and model from a dataset
     """

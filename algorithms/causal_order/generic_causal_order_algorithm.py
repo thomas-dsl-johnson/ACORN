@@ -3,6 +3,7 @@ import time
 import typing
 import os
 import pandas as pd
+from algorithms.causal_order.causal_order_result import CausalOrderResult
 
 CausalOrder: typing.TypeAlias = list[int]
 
@@ -32,7 +33,7 @@ class GenericCausalOrderAlgorithm:
         """
         raise NotImplementedError
 
-    def get_causal_order_result(self, filepath: str) -> (CausalOrder, float):
+    def get_causal_order_result(self, filepath: str) -> CausalOrderResult:
         """
         Run the Causal Order Algorithm
 
@@ -44,11 +45,10 @@ class GenericCausalOrderAlgorithm:
 
         Returns
         ----------
-        causal_order : CausalOrder,
-            The causal order. A CausalOrder is a list[int] where
-            each integer represents the index of a feature in the training IT_monitoring.
-        time_taken : float
-            The time taken to run the Causal Order algorithm in seconds.
+        causalOrderResult : CausalOrderResult
+            An object containing:
+            - `causal_order`: list of feature indices representing the causal order.
+            - `time_taken`: time taken to compute the causal order, in seconds.
         """
         file_extension = os.path.splitext(filepath)[1].lower()
         if file_extension == '.csv':
@@ -64,4 +64,4 @@ class GenericCausalOrderAlgorithm:
         causal_order = self.run(X)
         end = time.time()
         time_taken = end - beg
-        return causal_order, time_taken
+        return CausalOrderResult(causal_order, time_taken)
