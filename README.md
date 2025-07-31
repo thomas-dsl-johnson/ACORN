@@ -37,7 +37,7 @@ We now have the following file structure. To see a full explanation, got to [�
 └── utils/ ...
 ```
 #### 1\.b Complete setup
-Let's look at the data/ directory.
+Let's look at the data/ directory. 
 ```
 data
 ├── ground_truth_available
@@ -51,7 +51,7 @@ data
 └── ground_truth_not_available
     └── sp500/ ...
 ```
-The `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require this, skip to step 2.
+The `data/Causal_River/` directory is missing the `Bavaria/` and `East Germany/` directories as it appears in its repository structure explanation. This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require this, it is not required. 
 ```bash
 # 1. Clone the submodules
 git submodule update --init --recursive
@@ -166,6 +166,46 @@ data/ground_truth_available/Causal_River
     └── summary_matrix.npy
 ```
 ## 📂 Repository Structure
+
+```
+ACORN
+├── README.md
+├── algorithms
+│   ├── causal_order/
+│   └── end_to_end/
+├── data
+│   ├── ground_truth_available
+│   │   ├── Causal_River/
+│   │   └── IT_monitoring/
+│   └── ground_truth_not_available
+│       └── sp500/
+├── external
+│   ├── causal_rivers/
+│   └── recover_causal_graph_from_causal_order/
+├── requirements.txt
+├── results/
+├── run.py
+└── utils
+    └── storage.py
+```
+
+#### `algorithms/`
+
+#### `data/`
+This directory contains the datasets. Each dataset has its own subfolder, which includes the raw data and the corresponding ground truth files. The repository includes:
+* `ground_truth_available/`
+  * * **IT Monitoring Data**: `Antivirus_Activity`, `Middleware_oriented_message_Activity`, `Storm_Ingestion_Activity`, and `Web_Activity`. (Source: [Case\_Studies\_of\_Causal\_Discovery](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series))
+  * **CausalRiver Datasets**: `Flood`. (Source: [CausalRivers](https://github.com/CausalRivers/causalrivers))
+* `ground_truth_not_available/`
+  * **s&p500 Data**
+
+
+#### `external/`
+
+#### `results/`
+
+#### `utils/`
+
 
 -----
 ## 📝 Notes
