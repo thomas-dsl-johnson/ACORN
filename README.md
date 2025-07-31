@@ -25,7 +25,7 @@ git clone https://github.com/thomas-dsl-johnson/ACORN.git
 cd ACORN
 pip install -r requirements.txt
 ```
-We now have the following file structure. To see a full explanation, got to [📂 Repository Structure](https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/50e7f0a7b06cca6623de99a4b467a71f70deca1b?tab=readme-ov-file#-repository-structure):
+We now have the following file structure. To see a full explanation, got to [📂 Repository Structure](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#-repository-structure)
 ```
 .
 ├── algorithms/ ...
