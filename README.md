@@ -25,7 +25,7 @@ git clone https://github.com/thomas-dsl-johnson/ACORN.git
 cd ACORN
 pip install -r requirements.txt
 ```
-We now have the following file structure. To see a full explanation of the file structure, got to [📂 Repository Structure](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#-repository-structure).
+We now have the following file structure. To see a full explanation of the file structure, go to [📂 Repository Structure](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#-repository-structure).
 ```
 .
 ├── algorithms/ ...
@@ -79,7 +79,7 @@ Causal_River
 ├── East Germany
 │   ├── rivers_east_germany.p
 │   └── rivers_ts_east_germany.csv
-└── Flood/
+└── Flood/ ...
 ```
 We must now preprocess the .csv files using the [Causal Graph Recovery from Causal Order Repository](https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/50e7f0a7b06cca6623de99a4b467a71f70deca1b?tab=readme-ov-file#-repository-structure). Using your favourite editor, change the following constants in `process_causalriver.py`
 ```python
@@ -156,7 +156,7 @@ Causal_River
 └── Flood/ ...
 ```
 
-For completeness, we now we need to generate the `causal_order.txt` files. We will edit `external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix`
+For completeness, we now we need to generate the `causal_order.txt` files. We will edit `generate_order_from_matrix.py`
 ```python
 ROOT_DIR = os.getcwd()
 
@@ -166,7 +166,7 @@ DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "
 ```
 Then run the file.
 ```bash
-python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix.py
+python generate_order_from_matrix.py
 ```
 Then change for Bavaria.
 ```python
@@ -178,12 +178,12 @@ DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "
 ```
 Then run the file.
 ```bash
-python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix.py
+python generate_order_from_matrix.py
 ```
 
 We are done. The `Causal_River` file structure should now match as it appears in the [Repository Structure](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data)
 
-#### 1\.c Complete setup of your own datasets
+#### 1\.c Setup of your own datasets
 
 If you have your own dataset then place it in `data/` and read the instructions below.
  
@@ -225,6 +225,7 @@ data/
         ├── dataset2.csv
         ├── model.pkl
         └── summary_matrix.npy
+        ...
 ```
 
 **`causal_order.txt` Example:**
@@ -273,7 +274,7 @@ ACORN
 ```
 ├── causal_order
 │   ├── causal_order_result.py
-│   ├── generic_causal_order_algorithm.py
+│   ├── generic_c[causal_order.txt](data%2Fground_truth_not_available%2Fsp500%2Fcausal_order.txt)ausal_order_algorithm.py
 │   ├── new
 │   │   ├── direct_lingam_causal_order_algorithm_adding_nodes_in_batches_of_two.py
 │   │   └── direct_lingam_causal_order_algorithm_no_updates.py
@@ -375,5 +376,5 @@ This directory contains utility scripts.
 
   * Ensure that the number of variables in your dataset matches the dimensions of the summary matrix.
   * For large datasets (more than 15 variables), such as `CausalRiverFlood`, visualising the full causal graph is not recommended as it can become cluttered and difficult to interpret.
-  * Thank you to Zhao Tong (@jultrishyyy) for the [Causal Graph Recovery from Causal Order Repository](https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/50e7f0a7b06cca6623de99a4b467a71f70deca1b?tab=readme-ov-file#causal-graph-recovery-from-causal-order) and its detailed README 
+  * Thank you to Zhao Tong ([@jultrishyyy](https://github.com/jultrishyyy)) for the [Causal Graph Recovery from Causal Order Repository](https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/50e7f0a7b06cca6623de99a4b467a71f70deca1b?tab=readme-ov-file#causal-graph-recovery-from-causal-order) and its detailed README 
   * For any issues or questions, please open an issue on the repository's issue tracker.
