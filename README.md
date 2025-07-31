@@ -57,7 +57,7 @@ cp external/causal_rivers/product/rivers_east_germany.p data/ground_truth_availa
 cp external/causal_rivers/product/rivers_ts_bavaria.csv data/ground_truth_available/Causal_River/Bavaria
 cp external/causal_rivers/product/rivers_ts_east_germany.csv data/ground_truth_available/Causal_River/East\ Germany
 ```
-4. 
+4.a)
 We must now create the preprocessed .csv files using the Causal Graph Recovery from Causal Order Repository. Using your favourite editor change the following constants in `external/recover_causal_graph_from_causal_order/generate_ground_truth/process_causalriver.py`
 ```python
 ROOT_DIR = os.getcwd()
@@ -76,9 +76,82 @@ DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "
 input_filename = DATA_PATH + "/rivers_ts_bavaria.csv"
 output_filename = DATA_PATH + "/rivers_ts_bavaria_preprocessed.csv"
 ```
-Run again.
+Run the file.
 ```bash
 python external/recover_causal_graph_from_causal_order/generate_ground_truth/process_causalriver.py
+```
+4.b)
+Now we will create the `summary_matrix.npy` files for Bavaria and East Germany. We will edit `external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_causalriver_summary_matrix.py` 
+```python
+ROOT_DIR = os.getcwd()
+DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "East Germany")
+input_data_filename = DATA_PATH + "/rivers_ts_east_germany_preprocessed.csv" # Make sure this path is correct
+input_label_filename = DATA_PATH + "/rivers_east_germany.p" # Ground truth graph data
+output_matrix_filename = DATA_PATH + '/summary_matrix.npy'
+```
+Then run the file.
+```bash
+python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_causalriver_summary_matrix
+```
+Now repeat for Bavaria
+```python
+ROOT_DIR = os.getcwd()
+DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "Bavaria")
+input_data_filename = DATA_PATH + "/rivers_ts_bavaria_preprocessed.csv" # Make sure this path is correct
+input_label_filename = DATA_PATH + "/rivers_bavaria.p" # Ground truth graph data
+output_matrix_filename = DATA_PATH + '/summary_matrix.npy'
+```
+Then run the file.
+```bash
+python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_causalriver_summary_matrix
+```
+For completeness we shall generate the `causal_order.txt` files. We will edit `external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix`
+```python
+ROOT_DIR = os.getcwd()
+
+...
+
+DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "East Germany")
+```
+Then run the file.
+```bash
+python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix.py
+```
+Then change for Bavaria.
+```python
+ROOT_DIR = os.getcwd()
+
+...
+
+DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "Bavaria")
+```
+Then run the file.
+```bash
+python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix.py
+```
+
+We are done. Our Causal River file structure should now look like this. 
+```
+data/ground_truth_available/Causal_River
+├── Bavaria
+│   ├── causal_order.txt
+│   ├── rivers_bavaria.p
+│   ├── rivers_ts_bavaria.csv
+│   ├── rivers_ts_bavaria_preprocessed.csv
+│   └── summary_matrix.npy
+├── East Germany
+│   ├── causal_order.txt
+│   ├── rivers_east_germany.p
+│   ├── rivers_ts_east_germany.csv
+│   ├── rivers_ts_east_germany_preprocessed.csv
+│   └── summary_matrix.npy
+└── Flood
+    ├── causal_order.txt
+    ├── rivers_flood.p
+    ├── rivers_ts_flood.csv
+    ├── rivers_ts_flood_preprocessed.csv
+    ├── rivers_ts_flood_preprocessed_dates_removed.csv
+    └── summary_matrix.npy
 ```
 -----
 ## 📝 Notes
