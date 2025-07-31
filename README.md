@@ -201,14 +201,14 @@ See below for how the file structure, `causal_order.txt`, and `summary_matrix.np
 Ensure the following data is correctly formatted and placed appropriately within the `data/ground_truth_not_available` directory:
   * **Dataset**: Your dataset should be in a `.csv` file.
 
-Then run `utils/generate_data_when_ground_truth_not_available.py` to generate the `causal_order.txt`, and `summary_matrix.npy` files.
+Then run `utils/generate_data_when_ground_truth_not_available.py` to generate the `causal_order.txt`, and `summary_matrix.npy` files. Here, we are using DirLiNGAM to create a synthetic ground truth.
 
 ```bash
 cd utils
-python generate_data_when_ground_truth_not_available.py data/ground_truth_not_available/sp500/sp500.csv
+python generate_data_when_ground_truth_not_available.py data/ground_truth_not_available/Dataset/data.csv
 ```
 
-See below for how the file structure, `causal_order.txt`, and `summary_matrix.npy` should appear.
+See below for check how the file structure, `causal_order.txt`, and `summary_matrix.npy` should appear.
 
 
 
@@ -243,6 +243,7 @@ root/
  [1, 1, 1, 1, 0, 1, 0]]
 ```
 
+----
 ## 📂 Repository Structure
 
 ```
