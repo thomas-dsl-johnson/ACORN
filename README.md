@@ -201,7 +201,7 @@ See below for how the file structure, `causal_order.txt`, and `summary_matrix.np
 Ensure the following data is correctly formatted and placed appropriately within the `data/ground_truth_not_available` directory:
   * **Dataset**: Your dataset should be in a `.csv` file.
 
-Then run `utils/generate_data_when_ground_truth_not_available.py` to generate the `causal_order.txt`, and `summary_matrix.npy` files. Here, we are using DirLiNGAM to create a synthetic ground truth.
+Then run `utils/generate_data_when_ground_truth_not_available.py` to generate the `causal_order.txt`, and `summary_matrix.npy` files. Here, we are using DirLiNGAM to create a 'synthetic' ground truth. Replace the argument with the location of your datset.
 
 ```bash
 cd utils
@@ -210,21 +210,21 @@ python generate_data_when_ground_truth_not_available.py data/ground_truth_not_av
 
 See below for check how the file structure, `causal_order.txt`, and `summary_matrix.npy` should appear.
 
-
-
 **File Structure Example:**
 ```
-root/
-└── data/
-    └── Dataset1/
-        ├── causal_order.txt
-        ├── summary_matrix.npy
-        └── dataset2.csv
+data/
+├── ground_truth_available
+│   └── Dataset1/
+│       ├── causal_order.txt
+│       ├── dataset1.csv
+│       └── summary_matrix.npy
+│       ...
+└── ground_truth_not_available
     └── Dataset2/
         ├── causal_order.txt
-        ├── summary_matrix.npy
-        └── dataset2.csv
-    ......
+        ├── dataset2.csv
+        ├── model.pkl
+        └── summary_matrix.npy
 ```
 
 **`causal_order.txt` Example:**
