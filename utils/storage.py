@@ -39,7 +39,7 @@ def load(filename: str) -> Any:
     obj : Any
         The Python object loaded from the pickle file.
     """
-    full_file_path = os.path.join(OUTPUT_DIRECTORY, filename+'.pkl')
+    full_file_path = os.path.join(OUTPUT_DIRECTORY, filename)
     with open(full_file_path, 'rb') as file:
         obj = pickle.load(file)
     return obj
