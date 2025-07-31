@@ -37,7 +37,7 @@ We now have the following file structure. To see a full explanation of the file 
 └── utils/ ...
 ```
 #### 1\.b Complete setup of Causal River datasets
-Let's look at the `data/` directory. 
+If you do not require the Causal_River Bavaria and East Germany datasets, you can skip this step. Let's look at the `data/` directory:
 ```
 data
 ├── ground_truth_available
@@ -51,7 +51,7 @@ data
 └── ground_truth_not_available
     └── sp500/ ...
 ```
-The `data/Causal_River/` directory has the `Flood/` dataset directory but is missing the `Bavaria/` and `East Germany/` directories that appear in its [repository structure explanation](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data). This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require these datasets, you can skip these steps. 
+The `Causal_River/` directory has the `Flood/` dataset directory but is missing the `Bavaria/` and `East Germany/` directories that appear in its [repository structure explanation](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data). This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers).  
 ```bash
 # 1. Clone the following submodules: 1. Causal River, 2. Causal Graph Recovery from Casual Order 
 git submodule update --init --recursive
@@ -181,7 +181,7 @@ Then run the file.
 python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix.py
 ```
 
-We are done. Our Causal River file structure should now match as it appears [here](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data)
+We are done. The `Causal_River` file structure should now match as it appears in the [Repository Structure](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data)
 
 #### 1\.c Complete setup of your own datasets
 
@@ -193,6 +193,7 @@ Ensure the following data is correctly formatted and placed appropriately within
   * **Causal Order**: The causal order of variables should be stored in a `causal_order.txt` file as a Python list.
   * **Ground Truth Summary Matrix**: The ground truth summary matrix must be in a `summary_matrix.npy` file, saved as a NumPy array.
   * **Dataset**: Your dataset should be in a `.csv` file.
+
 See below for how the file structure, `causal_order.txt`, and `summary_matrix.npy` should appear. 
 
 #### 1\.c.ii. Your data does not have a ground truth
@@ -202,8 +203,9 @@ Ensure the following data is correctly formatted and placed appropriately within
 
 Then run `utils/generate_data_when_ground_truth_not_available.py` to generate the `causal_order.txt`, and `summary_matrix.npy` files.
 
-```python
-python utils/generate_data_when_ground_truth_not_available.py data/ground_truth_not_available/sp500/sp500.csv
+```bash
+cd utils
+python generate_data_when_ground_truth_not_available.py data/ground_truth_not_available/sp500/sp500.csv
 ```
 
 See below for how the file structure, `causal_order.txt`, and `summary_matrix.npy` should appear.
@@ -353,14 +355,19 @@ This directory contains the datasets. Each dataset has its own subfolder, which 
 
 
 #### `external/`
-We have 2 submodules.
-[Causal Rivers](https://github.com/CausalRivers/causalrivers)
-[Causal Graph Recovery from Causal Order Repository](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series)
+We have 2 submodules: [Causal Rivers](https://github.com/CausalRivers/causalrivers) and [Causal Graph Recovery from Causal Order Repository](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series). These are used during installation step 1.b. .
+To clone the submodules, run the following code snippet.
+```bash
+git submodule update --init --recursive
+```
 
 #### `results/`
 
+This folder stores the outputs of analysis. 
+
 #### `utils/`
 
+This directory contains utility scripts.
 
 -----
 ## 📝 Notes
