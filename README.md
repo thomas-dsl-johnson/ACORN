@@ -17,29 +17,41 @@ python --version
 ```
 
 ### 1\. Installation
+
+#### 1\.a Clone the repository
 To get started, clone the repository and install the necessary Python packages using the `requirements.txt` file. (It is recommended to install packages and run all scripts within a virtual environment to avoid dependency conflicts.)
 ```bash
 git clone https://github.com/thomas-dsl-johnson/ACORN.git
 cd ACORN
 pip install -r requirements.txt
 ```
-We now have the following file structure:
+We now have the following file structure. To see a full explanation, got to step 2. Functionality:
 ```
 .
 ├── algorithms/ ...
-├── data
-│   ├── ground_truth_available
-│   │   ├── Causal_River/
-│   │   │   └── Flood/
-│   │   └── IT_monitoring/ ...
-│   └── ground_truth_not_available/ ...
+├── data/ ...
 ├── external/ ...
 ├── README.md
 ├── requirements.txt
 ├── run.py
 └── utils/ ...
 ```
-The `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers).
+#### 1\.b Complete setup
+Let's look at the data/ directory.
+```
+data
+├── ground_truth_available
+│   ├── Causal_River
+│   │   └── Flood/ ...
+│   └── IT_monitoring
+│       ├── Antivirus_Activity/
+│       ├── Middleware_oriented_message_Activity/
+│       ├── Storm_Ingestion_Activity/ ...
+│       └── Web_Activity/ ...
+└── ground_truth_not_available
+    └── sp500/ ...
+```
+The `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require this, skip to step 2.
 ```bash
 # 1. Clone the submodules
 git submodule update --init --recursive
@@ -153,10 +165,12 @@ data/ground_truth_available/Causal_River
     ├── rivers_ts_flood_preprocessed_dates_removed.csv
     └── summary_matrix.npy
 ```
+## 📂 Repository Structure
+
 -----
 ## 📝 Notes
 
   * Ensure that the number of variables in your dataset matches the dimensions of the summary matrix.
   * For large datasets (more than 15 variables), such as `CausalRiverFlood`, visualising the full causal graph is not recommended as it can become cluttered and difficult to interpret.
-  * Thank you to Zhao Tong for the [Causal Graph Recovery from Causal Order Repository](https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/50e7f0a7b06cca6623de99a4b467a71f70deca1b?tab=readme-ov-file#causal-graph-recovery-from-causal-order) and its detailed README 
+  * Thank you to Zhao Tong (@jultrishyyy) for the [Causal Graph Recovery from Causal Order Repository](https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/50e7f0a7b06cca6623de99a4b467a71f70deca1b?tab=readme-ov-file#causal-graph-recovery-from-causal-order) and its detailed README 
   * For any issues or questions, please open an issue on the repository's issue tracker.
