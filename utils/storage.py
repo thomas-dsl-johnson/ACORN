@@ -61,3 +61,11 @@ def exists(filename: str):
     """
     full_file_path = os.path.join(OUTPUT_DIRECTORY, filename)
     return os.path.exists(full_file_path)
+
+if __name__ == '__main__':
+    x = load('/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/Causal_River/Flood/rivers_flood.p')
+    print(x)
+    print(type(x))
+    print("Nodes:", x.nodes())
+    print("Edges:", x.edges())
+    print(x.number_of_nodes())
