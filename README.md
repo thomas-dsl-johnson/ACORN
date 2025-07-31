@@ -51,7 +51,7 @@ data
 └── ground_truth_not_available
     └── sp500/ ...
 ```
-The `data/Causal_River/` directory is missing the `Bavaria/` and `East Germany/` directories as it appears in its repository structure explanation. This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require this, it is not required. 
+The `data/Causal_River/` directory is missing the `Bavaria/` and `East Germany/` directories as it appears in its [repository structure explanation](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data). This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require this, it is not required. 
 ```bash
 # 1. Clone the submodules
 git submodule update --init --recursive
@@ -192,10 +192,70 @@ ACORN
 #### `algorithms/`
 
 #### `data/`
+
+```
+├── ground_truth_available
+│   ├── Causal_River
+│   │   ├── Bavaria
+│   │   │   ├── causal_order.txt
+│   │   │   ├── rivers_bavaria.p
+│   │   │   ├── rivers_ts_bavaria.csv
+│   │   │   ├── rivers_ts_bavaria_preprocessed.csv
+│   │   │   └── summary_matrix.npy
+│   │   ├── East Germany
+│   │   │   ├── causal_order.txt
+│   │   │   ├── rivers_east_germany.p
+│   │   │   ├── rivers_ts_east_germany.csv
+│   │   │   ├── rivers_ts_east_germany_preprocessed.csv
+│   │   │   └── summary_matrix.npy
+│   │   └── Flood
+│   │       ├── causal_order.txt
+│   │       ├── rivers_flood.p
+│   │       ├── rivers_ts_flood.csv
+│   │       ├── rivers_ts_flood_preprocessed.csv
+│   │       ├── rivers_ts_flood_preprocessed_dates_removed.csv
+│   │       └── summary_matrix.npy
+│   └── IT_monitoring
+│       ├── Antivirus_Activity
+│       │   ├── causal_graph_label.png
+│       │   ├── causal_order.txt
+│       │   ├── preprocessed_1.csv
+│       │   ├── preprocessed_2.csv
+│       │   ├── structure.txt
+│       │   └── summary_matrix.npy
+│       ├── Middleware_oriented_message_Activity
+│       │   ├── causal_graph_label.png
+│       │   ├── causal_order.txt
+│       │   ├── monitoring_metrics_1.csv
+│       │   ├── monitoring_metrics_2.csv
+│       │   ├── structure.txt
+│       │   └── summary_matrix.npy
+│       ├── Storm_Ingestion_Activity
+│       │   ├── causal_graph_label.png
+│       │   ├── causal_order.txt
+│       │   ├── storm_data_normal.csv
+│       │   ├── structure.txt
+│       │   └── summary_matrix.npy
+│       └── Web_Activity
+│           ├── causal_graph_label.png
+│           ├── causal_order.txt
+│           ├── preprocessed_1.csv
+│           ├── preprocessed_2.csv
+│           ├── structure.txt
+│           └── summary_matrix.npy
+└── ground_truth_not_available
+    └── sp500
+        ├── sp500.xlsx
+        ├── sp500_100_columns.xlsx
+        ├── sp500_20_columns.xlsx
+        ├── sp500_3_columns.xlsx
+        └── sp500_50_columns.xlsx
+```
+
 This directory contains the datasets. Each dataset has its own subfolder, which includes the raw data and the corresponding ground truth files. The repository includes:
 * `ground_truth_available/`
-  * * **IT Monitoring Data**: `Antivirus_Activity`, `Middleware_oriented_message_Activity`, `Storm_Ingestion_Activity`, and `Web_Activity`. (Source: [Case\_Studies\_of\_Causal\_Discovery](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series))
-  * **CausalRiver Datasets**: `Flood`. (Source: [CausalRivers](https://github.com/CausalRivers/causalrivers))
+  * **IT Monitoring Data**:  Source: [Case\_Studies\_of\_Causal\_Discovery](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series)
+  * **CausalRiver Datasets**: Source: [CausalRivers](https://github.com/CausalRivers/causalrivers). For the Bavaria and East Germany data you must complete [step 1b](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#1b-complete-setup). 
 * `ground_truth_not_available/`
   * **s&p500 Data**
 
