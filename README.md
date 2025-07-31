@@ -25,7 +25,7 @@ git clone https://github.com/thomas-dsl-johnson/ACORN.git
 cd ACORN
 pip install -r requirements.txt
 ```
-We now have the following file structure. To see a full explanation, got to [📂 Repository Structure](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#-repository-structure)
+We now have the following file structure. To see a full explanation of the file structure, got to [📂 Repository Structure](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#-repository-structure).
 ```
 .
 ├── algorithms/ ...
@@ -51,12 +51,12 @@ data
 └── ground_truth_not_available
     └── sp500/ ...
 ```
-The `data/Causal_River/` directory is missing the `Bavaria/` and `East Germany/` directories that appear in its [repository structure explanation](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data). This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require this, you can skip these steps. 
+The `data/Causal_River/` directory has the `Flood/` dataset directory but is missing the `Bavaria/` and `East Germany/` directories that appear in its [repository structure explanation](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data). This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require these datasets, you can skip these steps. 
 ```bash
-# 1. Clone the submodules
+# 1. Clone the following submodules: 1. Causal River, 2. Causal Graph Recovery from Casual Order 
 git submodule update --init --recursive
 cd external/causal_rivers
-# 2. Follow the install steps for causal rivers
+# 2. Follow the install steps for Causal River
 ./install.sh
 conda activate causalrivers
 python 0_generate_datsets.py
@@ -68,8 +68,20 @@ cp external/causal_rivers/product/rivers_bavaria.p data/ground_truth_available/C
 cp external/causal_rivers/product/rivers_east_germany.p data/ground_truth_available/Causal_River/East\ Germany
 cp external/causal_rivers/product/rivers_ts_bavaria.csv data/ground_truth_available/Causal_River/Bavaria
 cp external/causal_rivers/product/rivers_ts_east_germany.csv data/ground_truth_available/Causal_River/East\ Germany
+cd external/recover_causal_graph_from_causal_order/generate_ground_truth
 ```
-We must now create the preprocessed .csv files using the Causal Graph Recovery from Causal Order Repository. Using your favourite editor change the following constants in `external/recover_causal_graph_from_causal_order/generate_ground_truth/process_causalriver.py`
+We now have:
+```
+Causal_River
+├── Bavaria
+│   ├── rivers_bavaria.p
+│   └── rivers_ts_bavaria.csv
+├── East Germany
+│   ├── rivers_east_germany.p
+│   └── rivers_ts_east_germany.csv
+└── Flood/
+```
+We must now preprocess the .csv files using the [Causal Graph Recovery from Causal Order Repository](https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/50e7f0a7b06cca6623de99a4b467a71f70deca1b?tab=readme-ov-file#-repository-structure). Using your favourite editor, change the following constants in `process_causalriver.py`
 ```python
 ROOT_DIR = os.getcwd()
 DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "East Germany")
@@ -78,9 +90,9 @@ output_filename = DATA_PATH + "/rivers_ts_east_germany_preprocessed.csv"
 ```
 Run the file.
 ```bash
-python external/recover_causal_graph_from_causal_order/generate_ground_truth/process_causalriver.py
+python process_causalriver.py
 ```
-Now repeat for Bavaria
+Now repeat for Bavaria.
 ```python
 ROOT_DIR = os.getcwd()
 DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "Bavaria")
@@ -89,9 +101,22 @@ output_filename = DATA_PATH + "/rivers_ts_bavaria_preprocessed.csv"
 ```
 Run the file.
 ```bash
-python external/recover_causal_graph_from_causal_order/generate_ground_truth/process_causalriver.py
+python process_causalriver.py
 ```
-Now we will create the `summary_matrix.npy` files for Bavaria and East Germany. We will edit `external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_causalriver_summary_matrix.py` 
+We now have:
+```
+Causal_River
+├── Bavaria
+│   ├── rivers_bavaria.p
+│   ├── rivers_ts_bavaria.csv
+│   └── rivers_ts_bavaria_preprocessed.csv
+├── East Germany
+│   ├── rivers_east_germany.p
+│   ├── rivers_ts_east_germany.csv
+│   └── rivers_ts_east_germany_preprocessed.csv
+└── Flood/ ...
+```
+Now we will create the `summary_matrix.npy` files for Bavaria and East Germany. We will edit `generate_causalriver_summary_matrix.py` 
 ```python
 ROOT_DIR = os.getcwd()
 DATA_PATH = os.path.join(ROOT_DIR, "data/ground_truth_available/Causal_River", "East Germany")
@@ -101,7 +126,7 @@ output_matrix_filename = DATA_PATH + '/summary_matrix.npy'
 ```
 Then run the file.
 ```bash
-python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_causalriver_summary_matrix
+python generate_causalriver_summary_matrix.py
 ```
 Now repeat for Bavaria
 ```python
@@ -113,9 +138,25 @@ output_matrix_filename = DATA_PATH + '/summary_matrix.npy'
 ```
 Then run the file.
 ```bash
-python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_causalriver_summary_matrix
+python generate_causalriver_summary_matrix.py
 ```
-For completeness we shall generate the `causal_order.txt` files. We will edit `external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix`
+We now have:
+```
+Causal_River
+├── Bavaria
+│   ├── rivers_bavaria.p
+│   ├── rivers_ts_bavaria.csv
+│   ├── rivers_ts_bavaria_preprocessed.csv
+│   └── summary_matrix.npy
+├── East Germany
+│   ├── rivers_east_germany.p
+│   ├── rivers_ts_east_germany.csv
+│   ├── rivers_ts_east_germany_preprocessed.csv
+│   └── summary_matrix.npy
+└── Flood/ ...
+```
+
+For completeness, we now we need to generate the `causal_order.txt` files. We will edit `external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix`
 ```python
 ROOT_DIR = os.getcwd()
 
@@ -142,8 +183,63 @@ python external/recover_causal_graph_from_causal_order/generate_ground_truth/gen
 
 We are done. Our Causal River file structure should now match as it appears [here](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data)
 
-#### 1\.c Complete setup of S&P500 dataset
+#### 1\.c Complete setup of your own datasets
 
+If you have your own dataset then place it in `data/` and read the instructions below.
+ 
+#### 1\.c.i. Your data has a ground truth:
+  
+Ensure the following data is correctly formatted and placed appropriately within the `data/ground_truth_available` directory:
+  * **Causal Order**: The causal order of variables should be stored in a `causal_order.txt` file as a Python list.
+  * **Ground Truth Summary Matrix**: The ground truth summary matrix must be in a `summary_matrix.npy` file, saved as a NumPy array.
+  * **Dataset**: Your dataset should be in a `.csv` file.
+See below for how the file structure, `causal_order.txt`, and `summary_matrix.npy` should appear. 
+
+#### 1\.c.ii. Your data does not have a ground truth
+
+Ensure the following data is correctly formatted and placed appropriately within the `data/ground_truth_not_available` directory:
+  * **Dataset**: Your dataset should be in a `.csv` file.
+
+Then run `utils/generate_data_when_ground_truth_not_available.py` to generate the `causal_order.txt`, and `summary_matrix.npy` files.
+
+```python
+python utils/generate_data_when_ground_truth_not_available.py data/ground_truth_not_available/sp500/sp500.csv
+```
+
+See below for how the file structure, `causal_order.txt`, and `summary_matrix.npy` should appear.
+
+
+
+**File Structure Example:**
+```
+root/
+└── data/
+    └── Dataset1/
+        ├── causal_order.txt
+        ├── summary_matrix.npy
+        └── dataset2.csv
+    └── Dataset2/
+        ├── causal_order.txt
+        ├── summary_matrix.npy
+        └── dataset2.csv
+    ......
+```
+
+**`causal_order.txt` Example:**
+```
+[0, 1, 2, 3, 5, 4, 6]
+```
+
+**`summary_matrix.npy` Example:**
+```python
+[[0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0],
+ [0, 0, 0, 0, 0, 0, 0],
+ [1, 1, 1, 1, 0, 1, 0],
+ [0, 0, 0, 0, 0, 0, 0],
+ [1, 1, 1, 1, 0, 1, 0]]
+```
 
 ## 📂 Repository Structure
 
