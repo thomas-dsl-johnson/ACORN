@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external/causal_rivers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external/recover_causal_graph_from_causal_order" vcs="Git" />
   </component>
 </project>

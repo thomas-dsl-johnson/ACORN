@@ -19,9 +19,10 @@ def save(obj: Any, filename: str):
         The name of the file
     """
     os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
-    full_file_path = os.path.join(OUTPUT_DIRECTORY, filename + '.pkl')
+    full_file_path = os.path.join(OUTPUT_DIRECTORY, filename)
     with open(full_file_path, 'wb') as file:
         pickle.dump(obj, file)
+    print(f'Saved {full_file_path}')
     return
 
 

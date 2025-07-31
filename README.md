@@ -36,8 +36,8 @@ We now have the following file structure. To see a full explanation, got to [�
 ├── run.py
 └── utils/ ...
 ```
-#### 1\.b Complete setup
-Let's look at the data/ directory. 
+#### 1\.b Complete setup of Causal River datasets
+Let's look at the `data/` directory. 
 ```
 data
 ├── ground_truth_available
@@ -51,7 +51,7 @@ data
 └── ground_truth_not_available
     └── sp500/ ...
 ```
-The `data/Causal_River/` directory is missing the `Bavaria/` and `East Germany/` directories as it appears in its [repository structure explanation](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data). This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require this, it is not required. 
+The `data/Causal_River/` directory is missing the `Bavaria/` and `East Germany/` directories that appear in its [repository structure explanation](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data). This is because the `CausalRiverBavaria` and `CausalRiverEastGermany` datasets are too large for this repository. We will need to download them from the original [CausalRivers GitHub repository](https://github.com/CausalRivers/causalrivers). If you do not require this, you can skip these steps. 
 ```bash
 # 1. Clone the submodules
 git submodule update --init --recursive
@@ -69,7 +69,6 @@ cp external/causal_rivers/product/rivers_east_germany.p data/ground_truth_availa
 cp external/causal_rivers/product/rivers_ts_bavaria.csv data/ground_truth_available/Causal_River/Bavaria
 cp external/causal_rivers/product/rivers_ts_east_germany.csv data/ground_truth_available/Causal_River/East\ Germany
 ```
-4.a)
 We must now create the preprocessed .csv files using the Causal Graph Recovery from Causal Order Repository. Using your favourite editor change the following constants in `external/recover_causal_graph_from_causal_order/generate_ground_truth/process_causalriver.py`
 ```python
 ROOT_DIR = os.getcwd()
@@ -92,7 +91,6 @@ Run the file.
 ```bash
 python external/recover_causal_graph_from_causal_order/generate_ground_truth/process_causalriver.py
 ```
-4.b)
 Now we will create the `summary_matrix.npy` files for Bavaria and East Germany. We will edit `external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_causalriver_summary_matrix.py` 
 ```python
 ROOT_DIR = os.getcwd()
@@ -142,29 +140,11 @@ Then run the file.
 python external/recover_causal_graph_from_causal_order/generate_ground_truth/generate_order_from_matrix.py
 ```
 
-We are done. Our Causal River file structure should now look like this. 
-```
-data/ground_truth_available/Causal_River
-├── Bavaria
-│   ├── causal_order.txt
-│   ├── rivers_bavaria.p
-│   ├── rivers_ts_bavaria.csv
-│   ├── rivers_ts_bavaria_preprocessed.csv
-│   └── summary_matrix.npy
-├── East Germany
-│   ├── causal_order.txt
-│   ├── rivers_east_germany.p
-│   ├── rivers_ts_east_germany.csv
-│   ├── rivers_ts_east_germany_preprocessed.csv
-│   └── summary_matrix.npy
-└── Flood
-    ├── causal_order.txt
-    ├── rivers_flood.p
-    ├── rivers_ts_flood.csv
-    ├── rivers_ts_flood_preprocessed.csv
-    ├── rivers_ts_flood_preprocessed_dates_removed.csv
-    └── summary_matrix.npy
-```
+We are done. Our Causal River file structure should now match as it appears [here](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#data)
+
+#### 1\.c Complete setup of S&P500 dataset
+
+
 ## 📂 Repository Structure
 
 ```
@@ -190,6 +170,22 @@ ACORN
 ```
 
 #### `algorithms/`
+
+```
+├── causal_order
+│   ├── causal_order_result.py
+│   ├── generic_causal_order_algorithm.py
+│   ├── new
+│   │   ├── direct_lingam_causal_order_algorithm_adding_nodes_in_batches_of_two.py
+│   │   └── direct_lingam_causal_order_algorithm_no_updates.py
+│   └── original
+│       └── direct_lingam_causal_order_algorithm.py
+└── end_to_end
+    ├── end_to_end_result.py
+    ├── generic_end_to_end_algorithm.py
+    ├── new
+    └── original
+```
 
 #### `data/`
 
@@ -254,13 +250,16 @@ ACORN
 
 This directory contains the datasets. Each dataset has its own subfolder, which includes the raw data and the corresponding ground truth files. The repository includes:
 * `ground_truth_available/`
-  * **IT Monitoring Data**:  Source: [Case\_Studies\_of\_Causal\_Discovery](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series)
-  * **CausalRiver Datasets**: Source: [CausalRivers](https://github.com/CausalRivers/causalrivers). For the Bavaria and East Germany data you must complete [step 1b](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#1b-complete-setup). 
+  * IT Monitoring Data:  Source: [Case\_Studies\_of\_Causal\_Discovery](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series)
+  * CausalRiver Datasets: Source: [CausalRivers](https://github.com/CausalRivers/causalrivers). For the Bavaria and East Germany data you must complete [step 1b](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#1b-complete-setup). 
 * `ground_truth_not_available/`
-  * **s&p500 Data**
+  * s&p500 Data
 
 
 #### `external/`
+We have 2 submodules.
+[Causal Rivers](https://github.com/CausalRivers/causalrivers)
+[Causal Graph Recovery from Causal Order Repository](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series)
 
 #### `results/`
 
