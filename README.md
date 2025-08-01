@@ -288,7 +288,6 @@ ACORN
 ```
 
 #### `data/`
-
 ```
 ├── ground_truth_available
 │   ├── Causal_River
@@ -340,12 +339,18 @@ ACORN
 │           ├── structure.txt
 │           └── summary_matrix.npy
 └── ground_truth_not_available
-    └── sp500
-        ├── sp500.xlsx
-        ├── sp500_100_columns.xlsx
-        ├── sp500_20_columns.xlsx
-        ├── sp500_3_columns.xlsx
-        └── sp500_50_columns.xlsx
+    ├── sp500
+    │   ├── causal_order.txt
+    │   ├── model.pkl
+    │   ├── sp500.csv
+    │   └── summary_matrix.npy
+    └── sp500_5_columns
+        ├── causal-graph
+        ├── causal-graph.pdf
+        ├── causal_order.txt
+        ├── model.pkl
+        ├── sp500_5_columns.xlsx
+        └── summary_matrix.npy
 ```
 
 This directory contains the datasets. Each dataset has its own subfolder, which includes the raw data and the corresponding ground truth files. The repository includes:
@@ -353,7 +358,7 @@ This directory contains the datasets. Each dataset has its own subfolder, which 
   * IT Monitoring Data:  Source: [Case\_Studies\_of\_Causal\_Discovery](https://github.com/ckassaad/Case_Studies_of_Causal_Discovery_from_IT_Monitoring_Time_Series)
   * CausalRiver Datasets: Source: [CausalRivers](https://github.com/CausalRivers/causalrivers). For the Bavaria and East Germany data you must complete [step 1b](https://github.com/thomas-dsl-johnson/ACORN?tab=readme-ov-file#1b-complete-setup). 
 * `ground_truth_not_available/`
-  * s&p500 Data
+  * S&P500 Data
 
 
 #### `external/`

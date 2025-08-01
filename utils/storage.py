@@ -3,9 +3,11 @@ This module handles the storage of data from the results
 """
 import pickle
 import os
+from pathlib import Path
 from typing import Any
-OUTPUT_DIRECTORY = 'results'
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]  # adjust as needed
+RESULTS_DIR = PROJECT_ROOT / "results"
 
 def save(obj: Any, filename: str, save_to_default=True):
     """
@@ -18,15 +20,16 @@ def save(obj: Any, filename: str, save_to_default=True):
     filename : str
         The name of the file
     """
+
     if save_to_default:
-        os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
-        full_file_path = os.path.join(OUTPUT_DIRECTORY, filename)
+        os.makedirs(RESULTS_DIR, exist_ok=True)
+        full_file_path = os.path.join(RESULTS_DIR, filename)
     else:
         full_file_path = filename
+    os.makedirs(os.path.dirname(full_file_path), exist_ok=True)
     with open(full_file_path, 'wb') as file:
         pickle.dump(obj, file)
     print(f'Saved {full_file_path}')
-    return
 
 
 def load(filename: str) -> Any:
@@ -43,7 +46,7 @@ def load(filename: str) -> Any:
     obj : Any
         The Python object loaded from the pickle file.
     """
-    full_file_path = os.path.join(OUTPUT_DIRECTORY, filename)
+    full_file_path = os.path.join(RESULTS_DIR, filename)
     with open(full_file_path, 'rb') as file:
         obj = pickle.load(file)
     return obj
@@ -63,13 +66,5 @@ def exists(filename: str):
     exists : bool
         True if the file exists, False otherwise.
     """
-    full_file_path = os.path.join(OUTPUT_DIRECTORY, filename)
+    full_file_path = os.path.join(RESULTS_DIR, filename)
     return os.path.exists(full_file_path)
-
-if __name__ == '__main__':
-    x = load('/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/Causal_River/Flood/rivers_flood.p')
-    print(x)
-    print(type(x))
-    print("Nodes:", x.nodes())
-    print("Edges:", x.edges())
-    print(x.number_of_nodes())

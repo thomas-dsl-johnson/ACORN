@@ -6,6 +6,7 @@ import lingam
 import pandas as pd
 from algorithms.causal_order.causal_order_result import CausalOrderResult
 from algorithms.end_to_end.end_to_end_result import EndToEndResult
+from utils.storage import save
 
 
 class GenericEndToEndAlgorithm:
@@ -29,6 +30,18 @@ class GenericEndToEndAlgorithm:
         model : lingam.DirectLiNGAM
             A fitted DirectLiNGAM model containing the estimated causal order.
             The causal order can be accessed via model.causal_order_ as a list of feature indices.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def __str__(self) -> str:
+        """
+        The default string representation of the algorithm.
+        Used in the name of the .pkl when saving the model.
+
+        Returns
+        ----------
+        string : str
         """
         raise NotImplementedError
 
@@ -95,3 +108,28 @@ class GenericEndToEndAlgorithm:
         time_taken = end - beg
         causal_order_result = CausalOrderResult(model.causal_order_, time_taken)
         return EndToEndResult(causal_order_result, model)
+
+    def get_and_save_end_to_end_result(self, filepath: str) -> EndToEndResult:
+        """
+        Run the Causal Order Algorithm and pickle the result.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file to load the training IT_monitoring from.
+            Only .csv, .xls, and .xlsx files are currently supported.
+        location : str
+            The location to save the results to.
+
+        Returns
+        ----------
+        result : EndToEndResult
+            An object that encapsulates the estimated causal order and the fitted DirectLiNGAM model.
+            - `result.causal_order_result.causal_order` gives the causal order as a list of feature indices.
+            - `result.causal_order_result.time` gives the time taken in seconds.
+            - `result.model` gives access to the full fitted lingam.DirectLiNGAM model.
+        """
+        end_to_end_result = self.get_end_to_end_result(filepath)
+        file_name = os.path.splitext(filepath)[0].lower()
+        save(end_to_end_result,  "end_to_end/" + self.__str__() + "_on_"+ os.path.basename(file_name))
+        return end_to_end_result

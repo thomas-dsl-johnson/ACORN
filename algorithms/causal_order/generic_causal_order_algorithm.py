@@ -33,6 +33,17 @@ class GenericCausalOrderAlgorithm:
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def __str__(self) -> str:
+        """
+        The default string representation of the algorithm.
+
+        Returns
+        ----------
+        string : str
+        """
+        raise NotImplementedError
+
     def get_causal_order_result(self, filepath: str) -> CausalOrderResult:
         """
         Run the Causal Order Algorithm

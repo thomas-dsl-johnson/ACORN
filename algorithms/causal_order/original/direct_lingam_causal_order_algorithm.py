@@ -27,7 +27,7 @@ class DirectLingamCausalOrderAlgorithm(GenericCausalOrderAlgorithm):
         Parameters
         ----------
         df : pd.DataFrame,
-             The training IT_monitoring, with shape (n_samples, n_features) where
+             The training data, with shape (n_samples, n_features) where
              - n_samples is the number of samples
              - n_features is the number of features
 
@@ -35,7 +35,7 @@ class DirectLingamCausalOrderAlgorithm(GenericCausalOrderAlgorithm):
         ----------
         causal_order : CausalOrder,
             The causal order. A CausalOrder is a list[int] where
-            each integer represents the index of a feature in the training IT_monitoring.
+            each integer represents the index of a feature in the training data.
         """
         return self.get_causal_order_using_direct_lingam(df)
 

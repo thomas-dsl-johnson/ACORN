@@ -11,5 +11,5 @@ class EndToEndResult:
         self.causal_order_result = causal_order_result
         self.model: lingam.DirectLiNGAM = model
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.causal_order_result)
