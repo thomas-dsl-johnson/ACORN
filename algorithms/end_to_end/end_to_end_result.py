@@ -1,6 +1,5 @@
 import lingam
 import numpy as np
-
 from algorithms.causal_order.causal_order_result import CausalOrderResult
 
 

@@ -1,8 +1,10 @@
 """
-This script loads data from a .csv or .xlsx file
-It then runs DirectLiNGAM and save the results to the same directory as the input file
-The file takes an argument
+This file loads data from a .csv or .xlsx file
+It then runs DirectLiNGAM and save the results of this to the same directory as the input file
+input: .csv or .xlsx
+output: causal_order.txt, summary_matrix.npy, model.pkl and (optionally) causal_graph.pdf
 
+Important: The file must be run with an argument for the target .csv file
 To run this file:
 cd utils
 python generate_data_when_ground_truth_not_available.py data/ground_truth_not_available/Dataset/data.csv
@@ -17,7 +19,7 @@ from lingam.utils import make_dot
 
 if "__main__" == __name__:
     if len(sys.argv) != 2:
-        raise Exception("Exactly one argument required e.g. data/ground_truth_not_available/Dataset/data.csv")
+        raise Exception("Target .csv file required as argument e.g. data/ground_truth_not_available/Dataset/data.csv")
     filepath = os.path.dirname(os.getcwd()) + '/' + sys.argv[1]
     file_extension = os.path.splitext(filepath)[1].lower()
     if file_extension == '.csv':
@@ -50,4 +52,4 @@ if "__main__" == __name__:
     if model.adjacency_matrix_.shape[0] <= 15:
         dot = make_dot(model.adjacency_matrix_)
         dot.render(dest + '/causal-graph')
-        print(".png saved to " + dest + '/causal-graph')
+        print(".pdf saved to " + dest + '/causal-graph')

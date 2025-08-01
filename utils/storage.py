@@ -1,12 +1,13 @@
 """
-This module handles the storage of data from the results
+This module handles the serialisation of data and deserialisation of results.
+By default, this module saves to the results/ directory
 """
 import pickle
 import os
 from pathlib import Path
 from typing import Any
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]  # adjust as needed
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 RESULTS_DIR = PROJECT_ROOT / "results"
 
 def save(obj: Any, filename: str, save_to_default=True):

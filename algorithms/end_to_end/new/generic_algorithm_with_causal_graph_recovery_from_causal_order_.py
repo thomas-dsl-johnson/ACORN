@@ -1,12 +1,7 @@
-import os
-
 import numpy as np
-
 from algorithms.causal_order.generic_causal_order_algorithm import GenericCausalOrderAlgorithm
 from algorithms.end_to_end.generic_end_to_end_algorithm import GenericEndToEndAlgorithm
 from external.recover_causal_graph_from_causal_order.utils.estimate_adjacency_matrix import estimate_adjacency_matrix
-from external.recover_causal_graph_from_causal_order.utils.helper_methods import \
-    prune_summary_matrix_with_best_f1_threshold, save_results_and_metrics, plot_summary_causal_graph
 
 
 class GenericAlgorithWithCausalGraphRecoveryFromCausalOrder(GenericEndToEndAlgorithm):
