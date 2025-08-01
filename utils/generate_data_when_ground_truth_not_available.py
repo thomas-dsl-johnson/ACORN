@@ -13,6 +13,7 @@ import lingam
 import pandas as pd
 import numpy as np
 import storage
+from lingam.utils import make_dot
 
 if "__main__" == __name__:
     if len(sys.argv) != 2:
@@ -35,7 +36,9 @@ if "__main__" == __name__:
     dest = "../" + os.path.dirname(sys.argv[1])
     # Write causal_order.txt
     with open(dest + "/causal_order.txt", "w") as file:
+        file.write('[')
         file.write(", ".join(map(str,model.causal_order_)))
+        file.write(']')
     print("Causal Order Saved to " + dest + "/causal_order")
     # Write summary_matrix.npy
     np.save(dest + "/summary_matrix.npy", model.adjacency_matrix_)
@@ -43,3 +46,8 @@ if "__main__" == __name__:
     # Write pickle file
     storage.save(model, dest + "/model.pkl", save_to_default=False)
     print("Model saved to " + dest + "/model.pkl")
+    # Write .png if size is small enough
+    if model.adjacency_matrix_.shape[0] <= 15:
+        dot = make_dot(model.adjacency_matrix_)
+        dot.render(dest + '/causal-graph')
+        print(".png saved to " + dest + '/causal-graph')
