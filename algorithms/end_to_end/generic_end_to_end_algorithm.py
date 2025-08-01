@@ -2,14 +2,17 @@ import abc
 import time
 import typing
 import os
+from typing import Any
+
 import lingam
 import pandas as pd
 from algorithms.causal_order.causal_order_result import CausalOrderResult
 from algorithms.end_to_end.end_to_end_result import EndToEndResult
+from algorithms.generic_algorithm import GenericAlgorithm
 from utils.storage import save
 
 
-class GenericEndToEndAlgorithm:
+class GenericEndToEndAlgorithm(GenericAlgorithm):
     """
     An abstract base class representing a generic algorithm that produces a causal order and model
     """
@@ -33,31 +36,12 @@ class GenericEndToEndAlgorithm:
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def __str__(self) -> str:
-        """
-        The default string representation of the algorithm.
-        Used in the name of the .pkl when saving the model.
+    def _algorithm_type(self) -> str:
+        return "end_to_end"
 
-        Returns
-        ----------
-        string : str
-        """
-        raise NotImplementedError
-
-    @staticmethod
-    def __get_df(filepath: str) -> pd.DataFrame:
-        file_extension = os.path.splitext(filepath)[1].lower()
-        if file_extension == '.csv':
-            X = pd.read_csv(filepath)
-        elif file_extension in ['.xls', '.xlsx']:
-            X = pd.read_excel(filepath)
-        else:
-            raise ValueError(
-                f"Unsupported file type: '{file_extension}'. "
-                "Only .csv, .xls, and .xlsx files are currently supported."
-            )
-        return X
+    def format_result(self, model: lingam.DirectLiNGAM, time_taken: float) -> EndToEndResult:
+        causal_order_result = CausalOrderResult(model.causal_order_, time_taken)
+        return EndToEndResult(causal_order_result, model)
 
     def get_causal_order_result(self, filepath: str) -> CausalOrderResult:
         """
@@ -76,12 +60,9 @@ class GenericEndToEndAlgorithm:
             - `causal_order`: list of feature indices representing the causal order.
             - `time_taken`: time taken to compute the causal order, in seconds.
         """
-        df = self.__get_df(filepath)
-        beg = time.time()
-        model = self.run(df)
-        end = time.time()
-        time_taken = end - beg
-        return CausalOrderResult(model.causal_order_, time_taken)
+        end_to_end_result = self.get_end_to_end_result(filepath)
+        causal_order_result = end_to_end_result.causal_order_result
+        return causal_order_result
 
     def get_end_to_end_result(self, filepath: str) -> EndToEndResult:
         """
@@ -101,13 +82,7 @@ class GenericEndToEndAlgorithm:
             - `result.causal_order_result.time` gives the time taken in seconds.
             - `result.model` gives access to the full fitted lingam.DirectLiNGAM model.
         """
-        df = self.__get_df(filepath)
-        beg = time.time()
-        model = self.run(df)
-        end = time.time()
-        time_taken = end - beg
-        causal_order_result = CausalOrderResult(model.causal_order_, time_taken)
-        return EndToEndResult(causal_order_result, model)
+        return self._get_result(filepath)
 
     def get_and_save_end_to_end_result(self, filepath: str) -> EndToEndResult:
         """
@@ -127,7 +102,4 @@ class GenericEndToEndAlgorithm:
             - `result.causal_order_result.time` gives the time taken in seconds.
             - `result.model` gives access to the full fitted lingam.DirectLiNGAM model.
         """
-        end_to_end_result = self.get_end_to_end_result(filepath)
-        file_name = os.path.splitext(filepath)[0].lower()
-        save(end_to_end_result,  "end_to_end/" + self.__str__() + "_on_"+ os.path.basename(file_name) + ".pkl")
-        return end_to_end_result
+        return self._get_and_save_result(filepath)

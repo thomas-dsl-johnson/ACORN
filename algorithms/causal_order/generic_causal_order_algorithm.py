@@ -2,18 +2,20 @@ import abc
 import time
 import typing
 import os
+from typing import Any
+
 import pandas as pd
-from algorithms.causal_order.causal_order_result import CausalOrderResult
 from utils.storage import save
+from algorithms.generic_algorithm import GenericAlgorithm
+from algorithms.causal_order.causal_order_result import CausalOrderResult
 
 CausalOrder: typing.TypeAlias = list[int]
 
 
-class GenericCausalOrderAlgorithm:
+class GenericCausalOrderAlgorithm(GenericAlgorithm):
     """
     An abstract base class representing a generic algorithm that produces a causal order
     """
-
     @abc.abstractmethod
     def run(self, df: pd.DataFrame) -> CausalOrder:
         """
@@ -34,16 +36,11 @@ class GenericCausalOrderAlgorithm:
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def __str__(self) -> str:
-        """
-        The default string representation of the algorithm.
+    def _algorithm_type(self) -> str:
+        return "causal_order"
 
-        Returns
-        ----------
-        string : str
-        """
-        raise NotImplementedError
+    def format_result(self, causal_order: CausalOrder, time_taken: float) -> CausalOrderResult:
+        return CausalOrderResult(causal_order, time_taken)
 
     def get_causal_order_result(self, filepath: str) -> CausalOrderResult:
         """
@@ -62,21 +59,7 @@ class GenericCausalOrderAlgorithm:
             - `causal_order`: list of feature indices representing the causal order.
             - `time_taken`: time taken to compute the causal order, in seconds.
         """
-        file_extension = os.path.splitext(filepath)[1].lower()
-        if file_extension == '.csv':
-            X = pd.read_csv(filepath)
-        elif file_extension in ['.xls', '.xlsx']:
-            X = pd.read_excel(filepath)
-        else:
-            raise ValueError(
-                f"Unsupported file type: '{file_extension}'. "
-                "Only .csv, .xls, and .xlsx files are currently supported."
-            )
-        beg = time.time()
-        causal_order = self.run(X)
-        end = time.time()
-        time_taken = end - beg
-        return CausalOrderResult(causal_order, time_taken)
+        return self._get_result(filepath)
 
     def get_and_save_causal_order_result(self, filepath: str) -> CausalOrderResult:
         """
@@ -95,7 +78,4 @@ class GenericCausalOrderAlgorithm:
             - `causal_order`: list of feature indices representing the causal order.
             - `time_taken`: time taken to compute the causal order, in seconds.
         """
-        causal_order_result = self.get_causal_order_result()
-        file_name = os.path.splitext(filepath)[0].lower()
-        save(causal_order_result,  "causal_order/" + self.__str__() + "_on_"+ os.path.basename(file_name) + ".pkl")
-        return causal_order_result
+        return self._get_and_save_result(filepath)
