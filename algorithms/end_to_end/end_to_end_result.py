@@ -1,6 +1,7 @@
 import lingam
 import numpy as np
 from algorithms.causal_order.causal_order_result import CausalOrderResult
+from algorithms.causal_order.generic_causal_order_algorithm import CausalOrder
 
 
 class EndToEndResult:
@@ -18,6 +19,12 @@ class EndToEndResult:
     def from_model(self, model: lingam.DirectLiNGAM, time_taken: float) -> 'EndToEndResult':
         causal_order_result = CausalOrderResult(model.causal_order_, time_taken)
         return self(causal_order_result, model.adjacency_matrix_, model=model)
+
+    @classmethod
+    def from_matrix(self,  result: tuple[np.ndarray, CausalOrder], time_taken: float) -> 'EndToEndResult':
+        estimated_summary_matrix_continuous, causal_order = result
+        causal_order_result = CausalOrderResult(causal_order, time_taken)
+        return self(causal_order_result, estimated_summary_matrix_continuous,)
 
     def __str__(self) -> str:
         return str(self.causal_order_result)

@@ -6,7 +6,7 @@ output: causal_order.txt, summary_matrix.npy, model.pkl and (optionally) causal_
 
 Important: The file must be run with an argument for the target .csv file
 To run this file:
-cd utils
+cd utilities
 python generate_data_when_ground_truth_not_available.py data/ground_truth_not_available/Dataset/data.csv
 """
 import sys

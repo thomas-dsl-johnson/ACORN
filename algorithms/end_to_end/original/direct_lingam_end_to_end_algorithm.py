@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import Any
 
+from algorithms.end_to_end.end_to_end_result import EndToEndResult
 from algorithms.end_to_end.generic_end_to_end_algorithm import GenericEndToEndAlgorithm
 import lingam
 
@@ -8,6 +9,8 @@ class DirectLingamEndToEndAlgorithm(GenericEndToEndAlgorithm, ABC):
     """
     Runs the full DirectLiNGAM algorithm using the LiNGAM module.
     """
+    def format_result(self, model: lingam.DirectLiNGAM, time_taken: float) -> EndToEndResult:
+        return EndToEndResult.from_model(model, time_taken)
 
     def run(self, df) -> Any:
         """

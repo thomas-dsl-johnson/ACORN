@@ -9,7 +9,7 @@ import pandas as pd
 from algorithms.causal_order.causal_order_result import CausalOrderResult
 from algorithms.end_to_end.end_to_end_result import EndToEndResult
 from algorithms.generic_algorithm import GenericAlgorithm
-from utils.storage import save
+from utilities.storage import save
 
 
 class GenericEndToEndAlgorithm(GenericAlgorithm):
@@ -38,9 +38,6 @@ class GenericEndToEndAlgorithm(GenericAlgorithm):
 
     def _algorithm_type(self) -> str:
         return "end_to_end"
-
-    def format_result(self, model: lingam.DirectLiNGAM, time_taken: float) -> EndToEndResult:
-        return EndToEndResult.from_model(model, time_taken)
 
     def get_causal_order_result(self, filepath: str) -> CausalOrderResult:
         """

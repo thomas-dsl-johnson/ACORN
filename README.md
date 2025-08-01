@@ -204,7 +204,7 @@ Ensure the following data is correctly formatted and placed appropriately within
 Then run `utils/generate_data_when_ground_truth_not_available.py` to generate the `causal_order.txt`, and `summary_matrix.npy` files. Here, we are using DirLiNGAM to create a 'synthetic' ground truth. Replace the argument with the location of your datset.
 
 ```bash
-cd utils
+cd utilities
 python generate_data_when_ground_truth_not_available.py data/ground_truth_not_available/Dataset/data.csv
 ```
 

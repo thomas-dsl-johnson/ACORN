@@ -3,7 +3,7 @@ import os
 import time
 from typing import Any
 import pandas as pd
-from utils.storage import save
+from utilities.storage import save
 
 
 class GenericAlgorithm:
@@ -129,5 +129,5 @@ class GenericAlgorithm:
         """
         result = self._get_result(filepath)
         file_name = os.path.splitext(filepath)[0].lower()
-        save(result, self._algorithm_type() + self.__str__() + "_on_" + os.path.basename(file_name) + ".pkl")
+        save(result, self._algorithm_type() + "/" + self.__str__() + "_on_" + os.path.basename(file_name) + ".pkl")
         return result

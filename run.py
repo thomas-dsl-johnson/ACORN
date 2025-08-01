@@ -8,7 +8,7 @@ if __name__ == "__main__":
     import lingam
     import pandas as pd
     import os
-    from utils.storage import save, load
+    from utilities.storage import save, load
     filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/sp500/sp500.csv"
     file_extension = os.path.splitext(filepath)[1].lower()
     if file_extension == '.csv':
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
 if __name__ == "__main__":
     # import lingam
-    # import utils.storage as storage
+    # import utilities.storage as storage
     # import lingam
     # import numpy as np
     # import os

@@ -1,5 +1,8 @@
+from typing import Tuple, Any, List
+
 import numpy as np
-from algorithms.causal_order.generic_causal_order_algorithm import GenericCausalOrderAlgorithm
+from algorithms.causal_order.generic_causal_order_algorithm import GenericCausalOrderAlgorithm, CausalOrder
+from algorithms.end_to_end.end_to_end_result import EndToEndResult
 from algorithms.end_to_end.generic_end_to_end_algorithm import GenericEndToEndAlgorithm
 from external.recover_causal_graph_from_causal_order.utils.estimate_adjacency_matrix import estimate_adjacency_matrix
 
@@ -19,8 +22,12 @@ class GenericAlgorithWithCausalGraphRecoveryFromCausalOrder(GenericEndToEndAlgor
     def __init__(self, causal_order_algorithm: GenericCausalOrderAlgorithm):
         self.causal_order_algorithm = causal_order_algorithm
 
-    def run(self, df) -> np.ndarray:
-        causal_order = self.causal_order_algorithm.run()
+    def format_result(self, result: tuple[np.ndarray, list[int]], time_taken: float) -> EndToEndResult:
+        return EndToEndResult.from_matrix(result, time_taken)
+
+    def run(self, df) -> tuple[np.ndarray, list[int]]:
+        res = self.causal_order_algorithm.run(df)
+        causal_order = res
 
         # DATA_PATH = args.data_path
         # OUTPUT_PATH = args.output_path
@@ -38,7 +45,7 @@ class GenericAlgorithWithCausalGraphRecoveryFromCausalOrder(GenericEndToEndAlgor
 
         # Estimate adjacency matrix
         estimated_summary_matrix_continuous = estimate_adjacency_matrix(causal_order, X)
-        return estimated_summary_matrix_continuous
+        return (estimated_summary_matrix_continuous, causal_order)
 
         # # Load label summary matrix
         # label_summary_matrix = np.load(label_filename)

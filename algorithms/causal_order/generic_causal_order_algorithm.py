@@ -5,7 +5,7 @@ import os
 from typing import Any
 
 import pandas as pd
-from utils.storage import save
+from utilities.storage import save
 from algorithms.generic_algorithm import GenericAlgorithm
 from algorithms.causal_order.causal_order_result import CausalOrderResult
 
