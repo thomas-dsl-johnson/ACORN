@@ -118,8 +118,6 @@ class GenericEndToEndAlgorithm:
         filepath : str
             The path to the file to load the training IT_monitoring from.
             Only .csv, .xls, and .xlsx files are currently supported.
-        location : str
-            The location to save the results to.
 
         Returns
         ----------
@@ -131,5 +129,5 @@ class GenericEndToEndAlgorithm:
         """
         end_to_end_result = self.get_end_to_end_result(filepath)
         file_name = os.path.splitext(filepath)[0].lower()
-        save(end_to_end_result,  "end_to_end/" + self.__str__() + "_on_"+ os.path.basename(file_name))
+        save(end_to_end_result,  "end_to_end/" + self.__str__() + "_on_"+ os.path.basename(file_name) + ".pkl")
         return end_to_end_result

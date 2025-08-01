@@ -4,6 +4,7 @@ import typing
 import os
 import pandas as pd
 from algorithms.causal_order.causal_order_result import CausalOrderResult
+from utils.storage import save
 
 CausalOrder: typing.TypeAlias = list[int]
 
@@ -76,3 +77,25 @@ class GenericCausalOrderAlgorithm:
         end = time.time()
         time_taken = end - beg
         return CausalOrderResult(causal_order, time_taken)
+
+    def get_and_save_causal_order_result(self, filepath: str) -> CausalOrderResult:
+        """
+        Run the Causal Order Algorithm and pickle the result.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file to load the training IT_monitoring from.
+            Only .csv, .xls, and .xlsx files are currently supported.
+
+        Returns
+        ----------
+        causalOrderResult : CausalOrderResult
+            An object containing:
+            - `causal_order`: list of feature indices representing the causal order.
+            - `time_taken`: time taken to compute the causal order, in seconds.
+        """
+        causal_order_result = self.get_causal_order_result()
+        file_name = os.path.splitext(filepath)[0].lower()
+        save(causal_order_result,  "causal_order/" + self.__str__() + "_on_"+ os.path.basename(file_name) + ".pkl")
+        return causal_order_result
