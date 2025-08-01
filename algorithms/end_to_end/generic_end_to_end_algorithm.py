@@ -40,8 +40,7 @@ class GenericEndToEndAlgorithm(GenericAlgorithm):
         return "end_to_end"
 
     def format_result(self, model: lingam.DirectLiNGAM, time_taken: float) -> EndToEndResult:
-        causal_order_result = CausalOrderResult(model.causal_order_, time_taken)
-        return EndToEndResult(causal_order_result, model)
+        return EndToEndResult.from_model(model, time_taken)
 
     def get_causal_order_result(self, filepath: str) -> CausalOrderResult:
         """

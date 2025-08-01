@@ -1,13 +1,15 @@
 from abc import ABC
+from typing import Any
+
 from algorithms.end_to_end.generic_end_to_end_algorithm import GenericEndToEndAlgorithm
 import lingam
 
 class DirectLingamEndToEndAlgorithm(GenericEndToEndAlgorithm, ABC):
     """
-    Runs the DirectLiNGAM algorithm using the LiNGAM module.
+    Runs the full DirectLiNGAM algorithm using the LiNGAM module.
     """
 
-    def run(self, df) -> lingam.DirectLiNGAM:
+    def run(self, df) -> Any:
         """
         Run the lingam module's DirectLiNGAM algorithm
 
