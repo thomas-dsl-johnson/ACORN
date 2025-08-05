@@ -1,5 +1,6 @@
 """
 This file finds the algorithms within the algorithms/ directory and makes a list.
+The output is written to the algorithms/ directory in algorithm_list.txt
 """
 import os
 from pathlib import Path
@@ -34,5 +35,5 @@ if __name__ == "__main__":
         print(algo)
     with open(PROJECT_ROOT / "algorithms" / "algorithm_list.txt", "w") as f:
         f.write("[")
-        f.write(", ".join(map(str,algorithms)))
+        f.write(", \n".join(map(str,algorithms)))
         f.write("]")

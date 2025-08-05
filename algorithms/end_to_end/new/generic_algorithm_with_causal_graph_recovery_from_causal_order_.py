@@ -23,7 +23,7 @@ class GenericAlgorithWithCausalGraphRecoveryFromCausalOrder(GenericEndToEndAlgor
         self.causal_order_algorithm = causal_order_algorithm
 
     def format_result(self, result: tuple[np.ndarray, list[int]], time_taken: float) -> EndToEndResult:
-        return EndToEndResult.from_matrix(result, time_taken)
+        return EndToEndResult.from_matrix(result, time_taken, self._algorithm_type(), self.__str__(), self.target_file)
 
     def run(self, df) -> tuple[np.ndarray, list[int]]:
         res = self.causal_order_algorithm.run(df)

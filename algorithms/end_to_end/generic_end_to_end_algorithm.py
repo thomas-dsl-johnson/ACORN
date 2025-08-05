@@ -37,6 +37,9 @@ class GenericEndToEndAlgorithm(GenericAlgorithm):
         raise NotImplementedError
 
     def _algorithm_type(self) -> str:
+        return "End to End"
+
+    def _algorithm_dir(self) -> str:
         return "end_to_end"
 
     def get_causal_order_result(self, filepath: str) -> CausalOrderResult:

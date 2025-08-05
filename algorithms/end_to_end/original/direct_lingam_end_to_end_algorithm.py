@@ -10,7 +10,7 @@ class DirectLingamEndToEndAlgorithm(GenericEndToEndAlgorithm, ABC):
     Runs the full DirectLiNGAM algorithm using the LiNGAM module.
     """
     def format_result(self, model: lingam.DirectLiNGAM, time_taken: float) -> EndToEndResult:
-        return EndToEndResult.from_model(model, time_taken)
+        return EndToEndResult.from_model(model, time_taken, self._algorithm_type(), self.__str__(), self.target_file)
 
     def run(self, df) -> Any:
         """

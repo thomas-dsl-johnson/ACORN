@@ -1,3 +1,8 @@
+"""
+When __name__ == '__main__':
+    - Run the ._get_and_save_result() method of all algorithms on the selected dataset
+    - Each algorithm must be in Pascal case to match its Snake case filename
+"""
 import importlib.util
 from algorithms.generic_algorithm import GenericAlgorithm
 import sys
@@ -46,5 +51,6 @@ def run_all_algorithms(filepath):
             instance._get_and_save_result(filepath)
 
 if __name__ == "__main__":
-    filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/Causal_River/Bavaria/rivers_ts_bavaria_preprocessed.csv"
+    # filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/sp500_5_columns/sp500_5_columns.xlsx"
+    filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/sp500/sp500.csv"
     run_all_algorithms(filepath)

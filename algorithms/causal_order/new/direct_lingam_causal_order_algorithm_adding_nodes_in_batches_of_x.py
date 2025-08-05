@@ -1,13 +1,14 @@
 """
-Add nodes in batches of two
+Add nodes in batches of x : x is an integer
 """
+BATCH_SIZE = 10
 import math
 import pandas as pd
 import numpy as np
 from algorithms.causal_order.generic_causal_order_algorithm import GenericCausalOrderAlgorithm
 
 
-class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo(GenericCausalOrderAlgorithm):
+class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfX(GenericCausalOrderAlgorithm):
     """
     Runs the DirectLiNGAM algorithm to generate the causal order:
     1.  Given a p-dimensional random vector x, a set of its variable subscripts U and a p × n data
@@ -121,7 +122,7 @@ class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo(GenericCausalOrd
                 self.entropy(xi_std) + self.entropy(rj_i / np.std(rj_i))
         )
 
-    def search_causal_order(self, X: np.ndarray, U: list[int]) -> (int, int):
+    def search_causal_order(self, X: np.ndarray, U: list[int], batch_size=None) -> list[int]:
         """
         Search for the next variable in the causal ordering.
 
@@ -148,13 +149,14 @@ class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo(GenericCausalOrd
         # this function would prune the candidate set.
         Uc = U
         # if there is only one candidate feature - we are done
-        if len(Uc) == 1:
-            return Uc[0], None
+        if len(Uc) <= batch_size:
+            # If fewer or equal than batch_size, just return them all
+            return list(Uc)
         # M_list: Stores the computed M values for each candidate variable.
         M_list = []
         for i in Uc:
             M = 0
-            for j in U:
+            for j in Uc:
                 if i != j:
                     # We compare two unique nodes i,j
                     # xi_std, xj_std: Standardised versions of variables i and j.
@@ -189,14 +191,13 @@ class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo(GenericCausalOrd
 
         ##############
         ##############
-        i = np.argmax(M_list)
-        xm = Uc[i]
-        M_list[i] = -math.inf
-        j = np.argmax(M_list)
-        xn = Uc[j]
+        top_indices = np.argsort(M_list)[-batch_size:]  # largest batch_size M's
+        top_nodes = [Uc[idx] for idx in reversed(top_indices)]  # reverse for descending order
+
+        return top_nodes
         ##############
         ##############
-        return xm, xn
+
 
     def get_causal_order_using_direct_lingam(self, df: pd.DataFrame) -> list[int]:
         """
@@ -231,39 +232,31 @@ class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo(GenericCausalOrd
         K = []
         X_ = np.copy(df)
 
-        for _ in range(n_features):
-            # Step 2(a): Find the Most Independent Variable m
+        batch_size = BATCH_SIZE
 
-            m, n = self.search_causal_order(X_, U)
+        while len(U) > 0:
+            # Step 2(a): Find the batch_size Most Independent Variables m
+            next_nodes = self.search_causal_order(X_, U, batch_size=batch_size)
             # Step 2(b): Append newly found causal variable m to ordered list K
-            K.append(m)
+            # Append all selected nodes to K
+            K.extend(next_nodes)
+
             # Step 2(c): Update X and U:
+            # For each node in U but not in next_nodes, remove linear effect of these next_nodes
             # For all other variables i still in U (not yet ordered),
             # their values in X_ are updated by regressing them on m.
             # This means the linear effect of m is removed from i.
             # If xm is a cause, its influence should be removed from its effects
             # to discover further causal relationships among the remaining variables.
             # This effectively transforms x into r(m) and X into R(m) as described in the algorithm.
-            for i in U:
-                if i != m:
-                    X_[:, i] = self.residual(X_[:, i], X_[:, m])
-            # Step 2(d) m is removed from the set of unordered variables U.
+            remaining = [i for i in U if i not in next_nodes]
+            for node in next_nodes:
+                for i in remaining:
+                    X_[:, i] = self.residual(X_[:, i], X_[:, node])
 
-            ##############
-            ##############
-            U = U[U != m]
-            if U.size == 0:
-                return K
-            K.append(n)
-            for i in U:
-                if i != n:
-                    X_[:, i] = self.residual(X_[:, i], X_[:, n])
             # Step 2(d) m is removed from the set of unordered variables U.
-            U = U[U != n]
-            if U.size == 0:
-                return K
-            ##############
-            ##############
+            # Remove these nodes from U
+            U = np.array([i for i in U if i not in next_nodes])
         return K
 
 
@@ -287,5 +280,5 @@ if __name__ == '__main__':
         return df
 
 
-    algorithm = DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo()
+    algorithm = DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfX()
     print(algorithm.get_causal_order_using_direct_lingam(get_matrix()))

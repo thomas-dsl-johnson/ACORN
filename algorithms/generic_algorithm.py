@@ -10,6 +10,9 @@ class GenericAlgorithm:
     """
     An abstract base class representing a generic algorithm that produces a causal order and model
     """
+    def __init__(self):
+        self.target_file = ""
+
 
     @abc.abstractmethod
     def run(self, df: pd.DataFrame) -> Any:
@@ -46,6 +49,17 @@ class GenericAlgorithm:
     def _algorithm_type(self) -> str:
         """
         The type of the algorithm i.e. is the algorithm a causal order algorithm or an end-to-end algorithm
+
+        Returns
+        ----------
+        string : str
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def _algorithm_dir(self) -> str:
+        """
+        The dir of the algorithm i.e. Where to save results of the algorithm within the results folder
 
         Returns
         ----------
@@ -102,6 +116,7 @@ class GenericAlgorithm:
             - `causal_order`: list of feature indices representing the causal order.
             - `time_taken`: time taken to compute the causal order, in seconds.
         """
+        self.target_file = filepath
         df = self.__get_df(filepath)
         beg = time.time()
         result = self.run(df)
@@ -129,5 +144,5 @@ class GenericAlgorithm:
         """
         result = self._get_result(filepath)
         file_name = os.path.splitext(filepath)[0].lower()
-        save(result, self._algorithm_type() + "/" + self.__str__() + "_on_" + os.path.basename(file_name) + ".pkl")
+        save(result, self._algorithm_dir() + "/" + self.__str__() + "/" + os.path.basename(file_name) + ".pkl")
         return result

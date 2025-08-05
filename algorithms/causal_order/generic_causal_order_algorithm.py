@@ -37,10 +37,13 @@ class GenericCausalOrderAlgorithm(GenericAlgorithm):
         raise NotImplementedError
 
     def _algorithm_type(self) -> str:
+        return "Causal Order"
+
+    def _algorithm_dir(self) -> str:
         return "causal_order"
 
     def format_result(self, causal_order: CausalOrder, time_taken: float) -> CausalOrderResult:
-        return CausalOrderResult(causal_order, time_taken)
+        return CausalOrderResult(causal_order, time_taken, self._algorithm_type(), self.__str__(), self.target_file)
 
     def get_causal_order_result(self, filepath: str) -> CausalOrderResult:
         """
