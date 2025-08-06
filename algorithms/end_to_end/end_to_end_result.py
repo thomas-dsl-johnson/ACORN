@@ -27,12 +27,10 @@ class EndToEndResult:
         return self(causal_order_result, estimated_summary_matrix_continuous,)
 
     def __str__(self) -> str:
-        # time_taken = self.causal_order_result.time_taken
-        # causal_order = self.causal_order_result.causal_order
-        # algorithm_name = self.causal_order_result.algorithm_name
-        # target_file = self.causal_order_result.target_file
-        # msg_target_file = "Target File: " + target_file
-        # msg_algorithm_name = "Algorithm: " + algorithm_name
-        # msg_causal_order = "Causal Order: " + str(causal_order)
-        # msg_time_taken = "time taken: " + str(time_taken) + "seconds"
-        return str(self.causal_order_result)
+        sb = ""
+        # Summary Matrix
+        if self.model != None:
+            sb += f"\nSummary matrix: \n{self.model.adjacency_matrix_}"
+        elif self.summary_matrix is not None:
+            sb += f"\nSummary matrix: \n{self.summary_matrix}"
+        return str(self.causal_order_result) + sb

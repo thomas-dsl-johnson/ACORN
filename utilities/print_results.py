@@ -20,18 +20,46 @@ def find_result(base_dir: Path) -> list[str]:
         for path in base_dir.rglob("*.pkl")
     ])
 
-
-
-if __name__ == "__main__":
+def get_all_results():
     results = find_result(PROJECT_ROOT / "results")
+    ret = []
     for result in results:
         result_path = Path(result)
         # Check which directory it belongs to
         if "causal_order" in result_path.parts:
-            res : CausalOrderResult = storage.load(result)
+            res: CausalOrderResult = storage.load(result)
         elif "end_to_end" in result_path.parts:
             res: EndToEndResult = storage.load(result)
         else:
             raise Exception(f"Unknown result type {result_path}")
-        print("\n")
-        print(res)
+        ret.append(res)
+    return ret
+
+def print_all_results():
+    all_results = get_all_results()
+    return "\n".join(map(str,all_results))
+
+def get_results_for_dataset(dataset_name: str):
+    results = find_result(PROJECT_ROOT / "results")
+    ret = []
+    for result in results:
+        result_path = Path(result)
+        # Check which directory it belongs to
+        if "causal_order" in result_path.parts:
+            res: CausalOrderResult = storage.load(result)
+        elif "end_to_end" in result_path.parts:
+            res: EndToEndResult = storage.load(result)
+            res = res.causal_order_result
+        else:
+            raise Exception(f"Unknown result type {result_path}")
+        if res.target_file != dataset_name:
+            continue
+        ret.append(res)
+    return ret
+
+def print_all_results_for_dataset(dataset_name: str):
+    all_results = get_results_for_dataset(dataset_name)
+    return "\n\n".join(map(str,all_results))
+
+if __name__ == "__main__":
+    print(print_all_results_for_dataset("/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/sp500/sp500.csv"))

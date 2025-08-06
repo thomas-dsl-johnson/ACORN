@@ -45,7 +45,7 @@ class DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfX(GenericCausalOrder
         return self.get_causal_order_using_direct_lingam(df)
 
     def __str__(self) -> str:
-        return "DirectLingamAlgorithmAddingNodesInBatchesOfTwo"
+        return "DirectLingamAlgorithmAddingNodesInBatchesOfX"
 
     @staticmethod
     def residual(xi: np.ndarray, xj: np.ndarray) -> np.ndarray:

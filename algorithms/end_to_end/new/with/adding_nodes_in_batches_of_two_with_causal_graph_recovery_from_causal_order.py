@@ -4,6 +4,6 @@ from algorithms.end_to_end.new.generic_algorithm_with_causal_graph_recovery_from
     GenericAlgorithWithCausalGraphRecoveryFromCausalOrder
 
 
-class AddingNodesInBatchesOfTwoWithCausalGraphRecoveryFromCausalOrder(GenericAlgorithWithCausalGraphRecoveryFromCausalOrder):
+class  AddingNodesInBatchesOfTwoWithCausalGraphRecoveryFromCausalOrder(GenericAlgorithWithCausalGraphRecoveryFromCausalOrder):
     def __init__(self):
         super().__init__(DirectLingamCausalOrderAlgorithmAddingNodesInBatchesOfTwo())
