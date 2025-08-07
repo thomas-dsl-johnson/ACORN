@@ -38,7 +38,7 @@ class GenericAlgorithWithCausalGraphRecoveryFromCausalOrder(GenericEndToEndAlgor
         # output_metrics_filename = os.path.join(OUTPUT_PATH, 'metrics.txt')
         # output_graph_filename = os.path.join(OUTPUT_PATH, 'causal_graph.png')
 
-        X = df
+        X = df.values
 
         # Load causal order from file
         causal_order = [int(x) for x in causal_order]

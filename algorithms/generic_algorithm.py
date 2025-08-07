@@ -3,7 +3,7 @@ import os
 import time
 from typing import Any
 import pandas as pd
-from utilities.storage import save
+from utils.storage import save
 
 
 class GenericAlgorithm:
@@ -97,6 +97,12 @@ class GenericAlgorithm:
                 f"Unsupported file type: '{file_extension}'. "
                 "Only .csv, .xls, and .xlsx files are currently supported."
             )
+        # If the first column is dates, remove it
+        first_column = X.columns[0]
+        if pd.api.types.is_datetime64_any_dtype(X[first_column]) or pd.to_datetime(X[first_column],
+                                                                                   errors='coerce').notna().all():
+            X = X.iloc[:, 1:]
+
         return X
 
     def _get_result(self, filepath: str) -> Any:
@@ -124,6 +130,11 @@ class GenericAlgorithm:
         time_taken = end - beg
         return self.format_result(result, time_taken)
 
+    def _get_save_location(self, filepath: str) -> str:
+        file_name = os.path.splitext(filepath)[0].lower()
+        return self._algorithm_dir() + "/" + self.__str__() + "/" + os.path.basename(os.path.dirname(os.path.dirname(filepath))) + "/" + os.path.basename(os.path.dirname(filepath)) + "/"+ os.path.basename(file_name) + ".pkl"
+
+
     def _get_and_save_result(self, filepath: str) -> Any:
         """
         Run the Causal Order Algorithm and pickle the result.
@@ -143,6 +154,6 @@ class GenericAlgorithm:
             - `result.model` gives access to the full fitted lingam.DirectLiNGAM model.
         """
         result = self._get_result(filepath)
-        file_name = os.path.splitext(filepath)[0].lower()
-        save(result, self._algorithm_dir() + "/" + self.__str__() + "/" + os.path.basename(file_name) + ".pkl")
+        result_location = self._get_save_location(filepath)
+        save(result, result_location)
         return result

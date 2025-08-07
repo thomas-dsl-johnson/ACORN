@@ -9,7 +9,7 @@ import pandas as pd
 from algorithms.causal_order.causal_order_result import CausalOrderResult
 from algorithms.end_to_end.end_to_end_result import EndToEndResult
 from algorithms.generic_algorithm import GenericAlgorithm
-from utilities.storage import save
+from utils.storage import save
 
 
 class GenericEndToEndAlgorithm(GenericAlgorithm):
