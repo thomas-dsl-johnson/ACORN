@@ -234,12 +234,13 @@ def save_results_and_metrics(label_summary_matrix, estimated_summary_matrix, est
 if __name__ == "__main__":
     #dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/sp500_5_columns/sp500_5_columns.xlsx"
     #dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/sp500_5_columns/sp500_5_columns.xlsx"
-    dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/IT_monitoring/Antivirus_Activity/preprocessed_2.csv"
+    #dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/IT_monitoring/Antivirus_Activity/preprocessed_2.csv"
+    dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/Causal_River/Flood/rivers_ts_flood_preprocessed.csv"
     ground_truth_causal_order, isRealTruth = get_ground_truth_causal_order(dataset)
     ground_truth_summary_matrix, _ = get_ground_truth_summary_matrix(dataset)
     print(ground_truth_causal_order, isRealTruth)
     print(ground_truth_summary_matrix)
-    algorithm_name = "DirectLingamAlgorithmAddingNodesInBatchesOfTwo"
+    algorithm_name = "ParaLingamAlgorithm"
     if isRealTruth:
         algorithm_name += ("_followed_by_CausalGraphRecoveryFromCausalOrder")
         found_summary_matrix = get_result_file_summary_matrix(dataset, algorithm_name)

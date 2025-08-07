@@ -250,6 +250,8 @@ data/
  [0, 0, 0, 0, 0, 0, 0],
  [1, 1, 1, 1, 0, 1, 0]]
 ```
+----
+## 📊 Running the Script
 
 ----
 ## 📂 Repository Structure
