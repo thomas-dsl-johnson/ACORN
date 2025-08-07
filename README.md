@@ -412,6 +412,21 @@ utils
 
 This directory contains utility scripts.
 
+&nbsp;&nbsp;&nbsp;&nbsp;`compare_results.py` A set of functions that compare two results.
+
+&nbsp;&nbsp;&nbsp;&nbsp;`generate_data_when_ground_truth_not_available.py` This file loads data from a .csv or .xlsx file
+It then runs DirectLiNGAM and save the results of this to the same directory as the input file.
+
+&nbsp;&nbsp;&nbsp;&nbsp;`generate_list_of_algorithms.py` This file finds the algorithms within the algorithms/ directory and makes a list.
+The output is written to the algorithms/ directory in algorithm_list.txt.
+
+&nbsp;&nbsp;&nbsp;&nbsp;`print_results.py` Find the results within the algorithms/ directory and prints a summary of each one.
+
+&nbsp;&nbsp;&nbsp;&nbsp;`run_all_algorithms_on_dataset.py` Run the `._get_and_save_result()` method of all algorithms on the selected dataset
+
+&nbsp;&nbsp;&nbsp;&nbsp;`storage.py` This module handles the serialisation of data and deserialisation of results.
+
+
 -----
 ## 📝 Notes
 
