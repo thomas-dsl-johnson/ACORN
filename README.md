@@ -1,6 +1,27 @@
 # ACORN - Assess Causal Order Results Neatly
 The ACORN repository provides a neat and simple way to assess and visualise the differences between different algorithms that generate causal orders from data
 
+# Table of Contents
+
+1. [About ACORN](#acorn---assess-causal-order-results-neatly)  
+2. [Usage](#-usage)
+3. [Getting Started](#-getting-started)  
+ 2.1 [Python Version](#python-version)  
+ 2.2 [Installation](#1-installation)  
+  2.2.1 [Clone the Repository](#1a-clone-the-repository)  
+  2.2.2 [Complete Setup of Causal River Datasets](#1b-complete-setup-of-causal-river-datasets)  
+  2.2.3 [Setup of Your Own Datasets](#1c-setup-of-your-own-datasets)   
+4. [Repository Structure](#-repository-structure)  
+ 4.1 [algorithms/](#algorithms)  
+ 4.2 [data/](#data)  
+ 4.3 [external/](#external)  
+ 4.4 [results/](#results)  
+ 4.5 [utils/](#utils)  
+5. [Notes](#-notes)
+
+----
+## 📊 Usage
+
 -----
 ## 🚀 Getting Started
 
@@ -250,8 +271,6 @@ data/
  [0, 0, 0, 0, 0, 0, 0],
  [1, 1, 1, 1, 0, 1, 0]]
 ```
-----
-## 📊 Running the Script
 
 ----
 ## 📂 Repository Structure
