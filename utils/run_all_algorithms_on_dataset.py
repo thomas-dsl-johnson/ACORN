@@ -12,9 +12,39 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 def snake_to_pascal(snake: str) -> str:
+    """
+    Convert a snake_case string to PascalCase.
+
+    Parameters
+    ----------
+    snake : str
+        The input snake_case string, optionally ending with `.py`.
+
+    Returns
+    -------
+    str
+        The converted PascalCase string.
+    """
     return ''.join(word.capitalize() for word in snake.replace(".py", "").split('_'))
 
 def import_algorithm_class(module_path: Path):
+    """
+    Import the algorithm class from a given module path.
+
+    Attempts to import the module specified by `module_path` and retrieve a class
+    whose name matches the PascalCase version of the module name. The class must be
+    a subclass of `GenericAlgorithm` to be returned.
+
+    Parameters
+    ----------
+    module_path : Path
+        The Python module path as a dot-separated string or `Path` (e.g., `algorithms.x.y.z`).
+
+    Returns
+    -------
+    type or None
+        The algorithm class if found and is a subclass of `GenericAlgorithm`, else None.
+    """
     try:
         module = importlib.import_module(module_path)
         class_name = snake_to_pascal(module_path.split('.')[-1])
@@ -28,6 +58,18 @@ def import_algorithm_class(module_path: Path):
     return None
 
 def run_all_algorithms(filepath):
+    """
+    Run all algorithms listed in the algorithm list file on a given dataset file.
+
+    Reads the list of algorithm module paths from `algorithms/algorithm_list.txt`,
+    imports each algorithm class, creates an instance, and runs its
+    `_get_and_save_result` method on the specified dataset file path.
+
+    Parameters
+    ----------
+    filepath : str or Path
+        The path to the dataset file to run the algorithms on.
+    """
     algorithm_list_path = PROJECT_ROOT / 'algorithms' / 'algorithm_list.txt'
     with open(algorithm_list_path, 'r') as f:
         content = f.read()
@@ -43,14 +85,5 @@ def run_all_algorithms(filepath):
             instance._get_and_save_result(filepath)
 
 if __name__ == "__main__":
-    from algorithms.causal_order.new.para_lingam_causal_order_algorithm import ParaLingamCausalOrderAlgorithm
-    #filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/S&P500/sp500_5_columns/sp500_5_columns.xlsx"
-    #filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/S&P500/sp500/sp500.csv"
-    #filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/IT_monitoring/Antivirus_Activity/preprocessed_2.csv"
-    #filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/IT_monitoring/Middleware_oriented_message_Activity/monitoring_metrics_2.csv"
-    # filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/IT_monitoring/Storm_Ingestion_Activity/storm_data_normal.csv"
-    # filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/IT_monitoring/Web_Activity/preprocessed_2.csv"
-    # filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/Causal_River/Bavaria/rivers_ts_bavaria_preprocessed.csv"
-    # filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/Causal_River/East Germany/rivers_ts_east_germany_preprocessed.csv"
-    filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/Causal_River/Flood/rivers_ts_flood_preprocessed.csv"
+    filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/S&P500/sp500_5_columns/sp500_5_columns.xlsx"
     run_all_algorithms(filepath)

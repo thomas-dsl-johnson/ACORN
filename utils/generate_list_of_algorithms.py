@@ -19,7 +19,19 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ALGORITHMS_DIR = PROJECT_ROOT / "algorithms"
 
 def is_algorithm(file_path: Path) -> bool:
-    """Return True if the file is a .py algorithm and not generic or a __pycache__ item."""
+    """
+    Check if a file is a Python algorithm implementation.
+
+    Parameters
+    ----------
+    file_path : Path
+        Path to the file to check.
+
+    Returns
+    -------
+    bool
+        True if the file is a Python algorithm implementation, False otherwise.
+    """
     name = file_path.name
     return (
         file_path.suffix == ".py"
@@ -30,11 +42,42 @@ def is_algorithm(file_path: Path) -> bool:
     )
 
 def path_to_module(path: Path) -> str:
-    """Convert a Path like algorithms/x/y/z.py to a Python module path: algorithms.x.y.z"""
+    """
+    Convert a file path to a Python module path.
+
+    Converts a path such as `algorithms/x/y/z.py` into the equivalent
+    dotted module path `algorithms.x.y.z`.
+
+    Parameters
+    ----------
+    path : Path
+        Path to the Python source file.
+
+    Returns
+    -------
+    str
+        The corresponding Python module path.
+    """
     return ".".join(path.with_suffix("").parts)
 
 def find_algorithm_modules(base_dir: Path) -> List[str]:
-    """Recursively find all non-generic algorithm Python files and return as importable module paths."""
+    """
+    Recursively find all algorithm Python files and return them as importable module paths.
+
+    This function searches within the given directory for `.py` files that qualify
+    as algorithm implementations (based on `is_algorithm`), and converts their paths
+    to Python module import paths.
+
+    Parameters
+    ----------
+    base_dir : Path
+        The base directory to search within.
+
+    Returns
+    -------
+    List[str]
+        A sorted list of module paths corresponding to algorithm files.
+    """
     return sorted([
         path_to_module(path.relative_to(PROJECT_ROOT))
         for path in base_dir.rglob("*.py")

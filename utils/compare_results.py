@@ -14,6 +14,44 @@ from utils import storage
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 def get_ground_truth_causal_order(filepath: str) -> (CausalOrder, bool):
+    """
+    Retrieve the ground truth causal order for a given dataset.
+
+    Depending on the dataset's directory structure, the function either:
+    - Loads the causal order from a `causal_order.txt` file if ground truth is available.
+    - Loads a proxy "ground truth" causal order from the stored `DirectLiNGAM` end-to-end result
+      if ground truth is not available.
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the dataset file. The path must contain either
+        `"ground_truth_available"` or `"ground_truth_not_available"` in its folder structure.
+
+    Returns
+    -------
+    causal_order : CausalOrder
+        A list of feature indices representing the true (or proxy) causal order,
+        where earlier indices are causes of later indices.
+    has_ground_truth : bool
+        True if the causal order is an actual ground truth, False if it is derived
+        from `DirectLiNGAM` results.
+
+    Raises
+    ------
+    FileNotFoundError
+        If the expected `causal_order.txt` or the `DirectLiNGAM` result file cannot be found.
+    Exception
+        If the `filepath` does not contain a recognized ground truth status directory.
+
+    Notes
+    -----
+    - Ground truth datasets are expected to store their order in the same folder
+      as the dataset file under the name `causal_order.txt`.
+    - The `causal_order.txt` file should contain a Python-style list of integers, e.g. `[0, 1, 2]`.
+    - For datasets without ground truth, the function looks for:
+      `"end_to_end/<DirectLiNGAMAlgorithmName>/<dataset_dir>/<dataset_name>.pkl"`.
+    """
     data_path = Path(filepath)
     if "ground_truth_available" in data_path.parts:
         # Ground truth exists
@@ -39,6 +77,43 @@ def get_ground_truth_causal_order(filepath: str) -> (CausalOrder, bool):
         raise Exception(f"Unknown result type {data_path}")
 
 def get_ground_truth_summary_matrix(filepath: str) -> (CausalOrder, bool):
+    """
+    Retrieve the ground truth summary matrix for a given dataset.
+
+    Depending on the dataset's directory structure, the function either:
+    - Loads the ground truth matrix from a `summary_matrix.npy` file if ground truth is available.
+    - Loads a proxy "ground truth" from the stored `DirectLiNGAM` end-to-end result
+      if ground truth is not available.
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the dataset file. The path must contain either
+        `"ground_truth_available"` or `"ground_truth_not_available"` in its folder structure.
+
+    Returns
+    -------
+    summary_matrix : np.ndarray
+        The binary adjacency matrix of shape (n_features, n_features) representing
+        the ground truth or proxy causal structure.
+    has_ground_truth : bool
+        True if the matrix is an actual ground truth, False if it is derived from
+        `DirectLiNGAM` results.
+
+    Raises
+    ------
+    FileNotFoundError
+        If the expected `summary_matrix.npy` or the `DirectLiNGAM` result file cannot be found.
+    Exception
+        If the `filepath` does not contain a recognized ground truth status directory.
+
+    Notes
+    -----
+    - Ground truth datasets are expected to store their matrix in the same folder
+      as the dataset file under the name `summary_matrix.npy`.
+    - For datasets without ground truth, the function looks for:
+      `"end_to_end/<DirectLiNGAMAlgorithmName>/<dataset_dir>/<dataset_name>.pkl"`.
+    """
     data_path = Path(filepath)
     if "ground_truth_available" in data_path.parts:
         # Ground truth exists
@@ -63,6 +138,37 @@ def get_ground_truth_summary_matrix(filepath: str) -> (CausalOrder, bool):
 
 
 def get_result_file_causal_order(dataset_path: str, algorithm_name: str) -> CausalOrder:
+    """
+    Load the predicted causal order from a stored result file.
+
+    This function constructs the expected file path to the stored causal order result
+    for a given dataset and algorithm, validates that the dataset path is under the
+    project's `data` directory, and returns the saved causal order.
+
+    Parameters
+    ----------
+    dataset_path : str
+        Path to the dataset file. Must be located under `PROJECT_ROOT / "data"`.
+    algorithm_name : str
+        Name of the algorithm whose causal order result should be loaded.
+
+    Returns
+    -------
+    CausalOrder
+        A list of feature indices representing the predicted causal order,
+        where earlier indices are predicted causes of later indices.
+
+    Raises
+    ------
+    ValueError
+        If `dataset_path` is not located under the expected `data` directory.
+
+    Notes
+    -----
+    - The causal order results are stored in:
+      `PROJECT_ROOT / "results" / "causal_order" / algorithm_name / <subdir> / <dataset_name>.pkl`
+    - The stored file is expected to be a `CausalOrderResult` object with a `.causal_order` attribute.
+    """
     dataset_path = Path(dataset_path)
     dataset_filename = dataset_path.stem + ".pkl"
 
@@ -82,6 +188,38 @@ def get_result_file_causal_order(dataset_path: str, algorithm_name: str) -> Caus
     return causal_order_result.causal_order
 
 def get_result_file_summary_matrix(dataset_path: str, algorithm_name: str) -> np.ndarray:
+    """
+    Load the summary matrix from an end-to-end result file for a given dataset and algorithm.
+
+    This function constructs the file path to the stored end-to-end result,
+    verifies that the dataset path is under the expected `data` directory,
+    and loads the corresponding summary matrix.
+
+    Parameters
+    ----------
+    dataset_path : str
+        Path to the dataset file. Must be located under `PROJECT_ROOT / "data"`.
+    algorithm_name : str
+        Name of the algorithm used to produce the results.
+
+    Returns
+    -------
+    np.ndarray
+        The summary matrix from the loaded end-to-end result file.
+
+    Raises
+    ------
+    ValueError
+        If the provided `dataset_path` is not under the expected `data` directory.
+
+    Notes
+    -----
+    - The dataset file name is assumed to be converted to a `.pkl` file for results.
+    - Results are stored in:
+      `PROJECT_ROOT / "results" / "end_to_end" / algorithm_name / <subdir> / <dataset_name>.pkl`
+    - The `<subdir>` is derived from the dataset path structure by dropping the first folder
+      and the file name.
+    """
     dataset_path = Path(dataset_path)
     dataset_filename = dataset_path.stem + ".pkl"
 
@@ -100,26 +238,93 @@ def get_result_file_summary_matrix(dataset_path: str, algorithm_name: str) -> np
     return end_to_end_result.summary_matrix
 
 def count_inverted_pairs(discovered_causal_order: CausalOrder, ground_truth_matrix: np.ndarray) -> float:
-        def correct_in_causal_order(order, j, i):
-            return order.index(j) < order.index(i)
+    """
+    Count the proportion of inverted causal pairs in a discovered causal order.
 
-        total_number_of_pairs = len(discovered_causal_order) * (len(discovered_causal_order) - 1)
-        inverted_pairs = 0
-        A = ground_truth_matrix
-        n = len(A)
-        for i in range(0, n):
-            for j in range(0, n):
-                x = A[i, j]
-                if x != 0:  # j -> i
-                    if not correct_in_causal_order(discovered_causal_order, j, i):
-                        inverted_pairs += 1
-        return inverted_pairs / total_number_of_pairs
+    This function compares a predicted causal ordering with the ground truth causal
+    adjacency matrix and measures how often the predicted order violates the
+    true cause-effect direction.
+
+    Parameters
+    ----------
+    discovered_causal_order : CausalOrder
+        A list of feature indices representing the predicted causal order,
+        where earlier elements are predicted to be causes of later ones.
+    ground_truth_matrix : np.ndarray
+        The ground truth adjacency matrix of shape (n_features, n_features),
+        where a non-zero entry at (i, j) means feature j causes feature i.
+
+    Returns
+    -------
+    float
+        The fraction of inverted causal pairs, calculated as:
+        (number of incorrectly ordered pairs) / (total number of possible ordered pairs).
+
+    Notes
+    -----
+    - A pair (j → i) is considered inverted if `j` appears after `i`
+      in `discovered_causal_order`.
+    - The denominator counts all possible ordered feature pairs,
+      regardless of whether a causal relation exists.
+    """
+    def correct_in_causal_order(order, j, i):
+        return order.index(j) < order.index(i)
+
+    total_number_of_pairs = len(discovered_causal_order) * (len(discovered_causal_order) - 1)
+    inverted_pairs = 0
+    A = ground_truth_matrix
+    n = len(A)
+    for i in range(0, n):
+        for j in range(0, n):
+            x = A[i, j]
+            if x != 0:  # j -> i
+                if not correct_in_causal_order(discovered_causal_order, j, i):
+                    inverted_pairs += 1
+    return inverted_pairs / total_number_of_pairs
 
 
 
 def save_results_and_metrics(label_summary_matrix, estimated_summary_matrix, estimated_summary_matrix_continuous=None,
                              lags=None, order=None, filename="results.txt", additional_info=None):
-    """Taken and adapted from Zhao Tong's repository"""
+    """
+    From Zhao Tong's Repository: https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/main
+
+    Save evaluation metrics, causal order analysis, and summary matrices to a text file.
+
+    This function compares a ground-truth binary adjacency matrix with an estimated one,
+    calculates performance metrics (precision, recall, F1), optionally evaluates causal order correctness,
+    and writes all results to a specified file.
+
+    Parameters
+    ----------
+    label_summary_matrix : np.ndarray
+        Binary ground-truth adjacency matrix of shape (n_features, n_features).
+        1 indicates a causal edge exists, 0 indicates no edge.
+    estimated_summary_matrix : np.ndarray
+        Binary predicted adjacency matrix of the same shape as `label_summary_matrix`,
+        representing pruned predictions after causal discovery.
+    estimated_summary_matrix_continuous : np.ndarray, optional
+        Continuous-valued adjacency matrix (e.g., maximum estimated causal effect before pruning).
+        Same shape as `label_summary_matrix`.
+    lags : list[int], optional
+    order : list[int], optional
+        The predicted causal order of features, where each integer is a feature index.
+    filename : str, default="results.txt"
+        Path to the output file where results will be saved.
+    additional_info : list[str], optional
+        Additional textual information to be written at the start of the file.
+
+    Returns
+    -------
+    None
+        The results are written directly to the specified file.
+
+    Notes
+    -----
+    - Precision, recall, and F1 score are computed based on binary matrices.
+    - If `order` is provided, the function also counts wrongly ordered causal pairs.
+    - The estimated summary matrix is saved in CSV format within the text file.
+    """
     with open(filename, 'w') as f:
         # --- Write scalar values ---
         if additional_info is not None:
@@ -232,9 +437,6 @@ def save_results_and_metrics(label_summary_matrix, estimated_summary_matrix, est
     print(f"All results have been successfully saved to '{filename}'")
 
 if __name__ == "__main__":
-    #dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/sp500_5_columns/sp500_5_columns.xlsx"
-    #dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/sp500_5_columns/sp500_5_columns.xlsx"
-    #dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/IT_monitoring/Antivirus_Activity/preprocessed_2.csv"
     dataset = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/Causal_River/Flood/rivers_ts_flood_preprocessed.csv"
     ground_truth_causal_order, isRealTruth = get_ground_truth_causal_order(dataset)
     ground_truth_summary_matrix, _ = get_ground_truth_summary_matrix(dataset)

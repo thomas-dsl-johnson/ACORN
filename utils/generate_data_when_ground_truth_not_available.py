@@ -1,5 +1,5 @@
 """
-This file loads data from a .csv or .xlsx file
+This function loads data from a .csv or .xlsx file
 It then runs DirectLiNGAM and save the results of this to the same directory as the input file
 input: .csv or .xlsx
 output: causal_order.txt, summary_matrix.npy, model.pkl and (optionally) causal_graph.pdf
