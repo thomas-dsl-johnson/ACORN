@@ -292,25 +292,40 @@ ACORN
 ```
 algorithms
 ├── algorithm_list.txt
-├── generic_algorithm.py
 ├── causal_order
 │   ├── causal_order_result.py
 │   ├── generic_causal_order_algorithm.py
 │   ├── new
-│   │   ├── direct_lingam_causal_order_algorithm_adding_nodes_in_batches_of_two.py
-│   │   ├── direct_lingam_causal_order_algorithm_adding_nodes_in_batches_of_x.py
-│   │   └── direct_lingam_causal_order_algorithm_no_updates.py
+│   │ ├── direct_lingam_causal_order_algorithm_adding_nodes_in_batches_of_two.py
+│   │ ├── direct_lingam_causal_order_algorithm_adding_nodes_in_batches_of_x.py
+│   │ ├── direct_lingam_causal_order_algorithm_lookup.py
+│   │ ├── direct_lingam_causal_order_algorithm_no_updates.py
+│   │ ├── direct_lingam_causal_order_algorithm_threshold.py
+│   │ └── para_lingam_causal_order_algorithm.py
 │   └── original
 │       └── direct_lingam_causal_order_algorithm.py
-└──  end_to_end
-    ├── end_to_end_result.py
-    ├── generic_end_to_end_algorithm.py
-    ├── new
-    │   ├── generic_algorithm_with_causal_graph_recovery_from_causal_order_.py
-    │   └── with/ ...
-    └── original
-        └── direct_lingam_end_to_end_algorithm.py
+├── end_to_end
+│   ├── end_to_end_result.py
+│   ├── generic_end_to_end_algorithm.py
+│   ├── new
+│   │ ├── generic_algorithm_with_causal_graph_recovery_from_causal_order_.py
+│   │ └── with/ ...
+│   └── original
+│       └── direct_lingam_end_to_end_algorithm.py
+└── generic_algorithm.py
 ```
+`generic_algorithm.py:` An abstract base class that defines the common interface for all algorithms, including methods for running the algorithm and handling results.
+
+`causal_order/`: Contains algorithms that only determine the causal order of variables.
+    
+* `generic_causal_order_algorithm.py`: A generic class for causal order algorithms.
+* `original/direct_lingam_causal_order_algorithm.py`: The standard implementation of the DirectLiNGAM causal ordering phase.
+* `new/`: Contains variations of the causal order algorithm, such as adding nodes in batches.
+
+`end_to_end/`: Contains algorithms that perform full causal graph discovery.
+* `generic_end_to_end_algorithm.py`: A generic class for end-to-end algorithms. 
+* `original/direct_lingam_end_to_end_algorithm.py`: An implementation that uses the lingam library to perform the full DirectLiNGAM analysis.
+* `new/generic_algorithm_with_causal_graph_recovery_from_causal_order_.py`: Runs a two-step approach that first finds the causal order using a subclass of generic_causal_order_algorithm and then recovers the causal graph using methods from the [Recover-Causal-Graph-from-Causal-Order](https://github.com/jultrishyyy/Recover-Causal-Graph-from-Causal-Order/tree/main) dataset.
 
 #### `data/`
 ```
@@ -405,16 +420,8 @@ git submodule update --init --recursive
 #### `results/`
 ```
 results
-├── causal_order
-│   ├── DirectLingamAlgorithm
-│   ├── DirectLingamAlgorithmAddingNodesInBatchesOfTwo
-│   ├── DirectLingamAlgorithmAddingNodesInBatchesOfX
-│   └── DirectLingamAlgorithmNoUpdates
-└── end_to_end
-    ├── DirectLingamAlgorithmAddingNodesInBatchesOfTwo_followed_by_CausalGraphRecoveryFromCausalOrder
-    ├── DirectLingamAlgorithmAddingNodesInBatchesOfX_followed_by_CausalGraphRecoveryFromCausalOrder
-    ├── DirectLingamAlgorithm_followed_by_CausalGraphRecoveryFromCausalOrder
-    └── DirectLingamEndToEndAlgorithm
+├── causal_order/ ...
+└── end_to_end/ ...
 ```
 
 This folder stores the outputs of analysis. 
