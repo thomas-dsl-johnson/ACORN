@@ -84,6 +84,11 @@ def run_all_algorithms(filepath):
             print(f"\nRunning {algo_cls.__name__} from {module_path}")
             instance._get_and_save_result(filepath)
 
+
+def main(filepath):
+    run_all_algorithms(filepath)
+
+
 if __name__ == "__main__":
     filepath = "/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_not_available/S&P500/sp500_5_columns/sp500_5_columns.xlsx"
-    run_all_algorithms(filepath)
+    main(filepath)

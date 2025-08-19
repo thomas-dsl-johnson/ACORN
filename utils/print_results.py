@@ -134,8 +134,13 @@ def print_all_results_for_dataset(dataset_name: str):
     all_results = get_results_for_dataset(dataset_name)
     print("\n\n".join(map(str,all_results)))
 
-if __name__ == "__main__":
+
+def main():
     print_all_results()
-    with open("info.txt","w") as f:
-        f.write("\n\n".join(map(str,get_all_results())))
+    with open("info.txt", "w") as f:
+        f.write("\n\n".join(map(str, get_all_results())))
+
+
+if __name__ == "__main__":
+    main()
     #print_all_results_for_dataset("/Users/thomasjohnson/Desktop/UROP/ACORN/data/ground_truth_available/IT_monitoring/Antivirus_Activity/preprocessed_2.csv")

@@ -84,16 +84,19 @@ def find_algorithm_modules(base_dir: Path) -> List[str]:
         if is_algorithm(path)
     ])
 
-if __name__ == "__main__":
-    module_paths = find_algorithm_modules(ALGORITHMS_DIR)
 
+def main():
+    module_paths = find_algorithm_modules(ALGORITHMS_DIR)
     for module in module_paths:
         print(module)
-
     output_file = ALGORITHMS_DIR / "algorithm_list.txt"
     with open(output_file, "w") as f:
         f.write("[\n")
         for module in module_paths:
             f.write(f'    "{module}",\n')
         f.write("]\n")
+
+
+if __name__ == "__main__":
+    main()
 
