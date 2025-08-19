@@ -22,6 +22,25 @@ The ACORN repository provides a neat and simple way to assess and visualise the 
 ----
 ## 📊 Usage
 
+To test your have a working installation of the repository. Try running the following. It may take quite some time to run.
+```bash
+python run.py
+```
+Or do the following step-by-step process.
+
+```bash
+python generate_list_of_algorithms.py
+# This file finds the algorithms within the algorithms/ directory and makes a list.
+# The output is written to the algorithms/ directory in algorithm_list.txt.
+python run_all_algorithms_on_dataset.py
+# Run all algorithms in the algorithm_list.txt on the selected dataset
+python print_results.py
+# Run the main method of print_results.py
+```
+For more advanced use cases or to make your own implementations you can find more detail in the relevant [Utilities section](#utils). 
+
+For setting up your own datasets see them relevant [Installation Section](#1c-setup-of-your-own-datasets).
+
 -----
 ## 🚀 Getting Started
 
